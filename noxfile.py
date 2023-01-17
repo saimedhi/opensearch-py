@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 236")
 import nox
 
 SOURCE_FILES = (
@@ -35,9 +35,10 @@ SOURCE_FILES = (
     "utils/",
 )
 
-
-@nox.session(python=["2.7", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9"])
+print("\n\n test_print............. 237")
+@nox.session(python=[ "3.9"])
 def test(session):
+    print("\n\n test_print............. 238")
     session.install(".")
     session.install("-r", "dev-requirements.txt")
 
@@ -46,6 +47,7 @@ def test(session):
 
 @nox.session()
 def format(session):
+    print("\n\n test_print............. 239")
     session.install("black", "isort")
 
     session.run("isort", "--profile=black", *SOURCE_FILES)
@@ -57,6 +59,7 @@ def format(session):
 
 @nox.session()
 def lint(session):
+    print("\n\n test_print............. 240")
     session.install("flake8", "black", "mypy", "isort", "types-requests")
 
     session.run("isort", "--check", "--profile=black", *SOURCE_FILES)
@@ -82,6 +85,7 @@ def lint(session):
 
 @nox.session()
 def docs(session):
+    print("\n\n test_print............. 241")
     session.install(".")
     session.install(
         "-rdev-requirements.txt", "sphinx-rtd-theme", "sphinx-autodoc-typehints"

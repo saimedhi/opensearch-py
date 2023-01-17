@@ -44,7 +44,7 @@ from ..exceptions import (
 )
 from .base import Connection
 
-
+print("\n\n test_print............. 40")
 class RequestsHttpConnection(Connection):
     """
     Connection using the `requests` library.
@@ -87,6 +87,7 @@ class RequestsHttpConnection(Connection):
         pool_maxsize=None,
         **kwargs
     ):
+        print("\n\n test_print............. 41")
         if not REQUESTS_AVAILABLE:
             raise ImproperlyConfigured(
                 "Please install requests to use RequestsHttpConnection."

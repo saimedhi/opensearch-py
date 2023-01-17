@@ -25,18 +25,20 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 158")
 from __future__ import unicode_literals
 
 from . import OpenSearchTestCase
 
 
 class TestUnicode(OpenSearchTestCase):
+    print("\n\n test_print............. 159")
     def test_indices_analyze(self):
         self.client.indices.analyze(body='{"text": "привет"}')
 
 
 class TestBulk(OpenSearchTestCase):
+    print("\n\n test_print............. 160")
     def test_bulk_works_with_string_body(self):
         docs = '{ "index" : { "_index" : "bulk_test_index", "_id" : "1" } }\n{"answer": 42}'
         response = self.client.bulk(body=docs)

@@ -32,7 +32,7 @@ try:
 except ImportError:
     import Queue as queue  # type: ignore
 
-
+print("\n\n test_print............. 45")
 class PoolingConnection(Connection):
     """
     Base connection class for connections that use libraries without thread
@@ -40,7 +40,7 @@ class PoolingConnection(Connection):
     ``_make_connection`` method that constructs a new connection and returns
     it.
     """
-
+    print("\n\n test_print............. 46")
     def __init__(self, *args, **kwargs):
         self._free_connections = queue.Queue()
         super(PoolingConnection, self).__init__(*args, **kwargs)

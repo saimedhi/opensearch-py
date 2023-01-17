@@ -48,11 +48,11 @@ from .compat import get_running_loop
 # for SSL kwargs if also using an SSLContext.
 VERIFY_CERTS_DEFAULT = object()
 SSL_SHOW_WARN_DEFAULT = object()
-
+ print("\n\n test_print............. 28_1")
 
 class AsyncConnection(Connection):
     """Base class for Async HTTP connection implementations"""
-
+    print("\n\n test_print............. 28")
     async def perform_request(
         self,
         method,
@@ -124,7 +124,7 @@ class AIOHttpConnection(AsyncConnection):
             For tracing all requests made by this transport.
         :arg loop: asyncio Event Loop to use with aiohttp. This is set by default to the currently running loop.
         """
-
+        print("\n\n test_print............. 29")
         self.headers = {}
 
         super().__init__(

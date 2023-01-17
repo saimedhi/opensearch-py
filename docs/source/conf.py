@@ -16,7 +16,7 @@
 
 
 # -- Project information -----------------------------------------------------
-
+print("\n\n test_print............. 23")
 project = 'OpenSearch Python Client'
 copyright = 'OpenSearch Project Contributors'
 author = 'OpenSearch Project Contributors'
@@ -27,6 +27,7 @@ author = 'OpenSearch Project Contributors'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+print("\n\n test_print............. 24")
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx_rtd_theme",

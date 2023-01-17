@@ -26,10 +26,12 @@
 
 
 from test_opensearchpy.test_cases import OpenSearchTestCase
-
+print("\n\n test_print............. 136")
 
 class TestCluster(OpenSearchTestCase):
+    print("\n\n test_print............. 137")
     def test_stats_without_node_id(self):
+        print("\n\n test_print............. 138")
         self.client.cluster.stats()
         self.assert_url_called("GET", "/_cluster/stats")
 

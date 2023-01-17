@@ -24,16 +24,18 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 152")
 from unittest import SkipTest
-
+print("\n\n test_print............. 152_2")
 from opensearchpy.helpers import test
+print("\n\n test_print............. 152_3")
 from opensearchpy.helpers.test import OpenSearchTestCase as BaseTestCase
-
+print("\n\n test_print............. 152_1")
 client = None
 
 
 def get_client(**kwargs):
+    print("\n\n test_print............. 153")
     global client
     if client is False:
         raise SkipTest("No client is available")
@@ -64,6 +66,7 @@ def setup_module():
 
 
 class OpenSearchTestCase(BaseTestCase):
+    print("\n\n test_print............. 154")
     @staticmethod
     def _get_client(**kwargs):
         return get_client(**kwargs)

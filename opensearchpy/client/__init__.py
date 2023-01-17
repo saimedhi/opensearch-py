@@ -203,6 +203,7 @@ class OpenSearch(object):
         self.features = FeaturesClient(self)
 
         self.plugins = PluginsClient(self)
+        print("\n\n test_print.[............ 31_1]")
 
     def __repr__(self):
         try:

@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 176")
 from typing import Any, AsyncGenerator, Dict
 
 from opensearchpy import (
@@ -44,6 +44,7 @@ client = AsyncOpenSearch(
     [{"host": "localhost", "port": 9443}],
     transport_class=AsyncTransport,
 )
+print("\n\n test_print............. 177")
 t = AsyncTransport(
     [{}],
     connection_class=AIOHttpConnection,

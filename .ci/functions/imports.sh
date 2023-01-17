@@ -6,6 +6,7 @@
 # - Initial version after refactor
 
 if [[ -z $opensearch_node_name ]]; then
+  print("\n\n test_print............. 7")
   # only set these once
   set -euo pipefail
   export TEST_SUITE=${TEST_SUITE-oss}
@@ -33,11 +34,11 @@ fi
   source $script_path/functions/wait-for-container.sh
   trap "cleanup_trap ${network_name}" EXIT
 
-
+print("\n\n test_print............. 8")
 if [[ "$CLEANUP" == "true" ]]; then
   cleanup_all_in_network $network_name
   exit 0
 fi
-
+print("\n\n test_print............. 9")
 echo -e "\033[34;1mINFO:\033[0m Creating network $network_name if it does not exist already \033[0m"
 docker network inspect "$network_name" > /dev/null 2>&1 || docker network create "$network_name"

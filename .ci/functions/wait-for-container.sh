@@ -9,6 +9,7 @@
 # - Make sure wait_for_contiainer is silent
 
 function wait_for_container {
+  print("\n\n test_print............. 10")
   set +x
   until ! container_running "$1" || (container_running "$1" && [[ "$(docker inspect -f "{{.State.Health.Status}}" ${1})" != "starting" ]]); do
     echo ""

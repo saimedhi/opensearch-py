@@ -23,7 +23,7 @@ from ..exceptions import (
     ImproperlyConfigured,
     SSLError,
 )
-
+print("\n\n test_print............. 37")
 VERIFY_CERTS_DEFAULT = object()
 SSL_SHOW_WARN_DEFAULT = object()
 
@@ -51,7 +51,7 @@ class AsyncHttpConnection(AIOHttpConnection):
         **kwargs
     ):
         self.headers = {}
-
+        print("\n\n test_print............. 38")
         super().__init__(
             host=host,
             port=port,
@@ -61,7 +61,7 @@ class AsyncHttpConnection(AIOHttpConnection):
             opaque_id=opaque_id,
             **kwargs
         )
-
+        print("\n\n test_print............. 39")
         if http_auth is not None:
             if isinstance(http_auth, (tuple, list)):
                 http_auth = ":".join(http_auth)
@@ -80,7 +80,7 @@ class AsyncHttpConnection(AIOHttpConnection):
             warnings.warn(
                 "When using `ssl_context`, all other SSL related kwargs are ignored"
             )
-
+        print("\n\n test_print............. 40_1")
         self.ssl_assert_fingerprint = ssl_assert_fingerprint
         if self.use_ssl and ssl_context is None:
             if ssl_version is None:

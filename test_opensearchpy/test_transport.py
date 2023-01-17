@@ -24,7 +24,7 @@
 #  KIND, either express or implied.  See the License for the
 #  specific language governing permissions and limitations
 #  under the License.
-
+print("\n\n test_print............. 210")
 
 from __future__ import unicode_literals
 
@@ -42,6 +42,7 @@ from .test_cases import TestCase
 
 
 class DummyConnection(Connection):
+    print("\n\n test_print............. 211")
     def __init__(self, **kwargs):
         self.exception = kwargs.pop("exception", None)
         self.status, self.data = kwargs.pop("status", 200), kwargs.pop("data", "{}")
@@ -108,6 +109,7 @@ CLUSTER_NODES_7x_PUBLISH_HOST = """{
 
 
 class TestHostsInfoCallback(TestCase):
+    print("\n\n test_print............. 212")
     def test_cluster_manager_only_nodes_are_ignored(self):
         nodes = [
             {"roles": ["cluster_manager"]},
@@ -125,6 +127,7 @@ class TestHostsInfoCallback(TestCase):
 
 
 class TestTransport(TestCase):
+    print("\n\n test_print............. 213")
     def test_single_connection_uses_dummy_connection_pool(self):
         t = Transport([{}])
         self.assertIsInstance(t.connection_pool, DummyConnectionPool)

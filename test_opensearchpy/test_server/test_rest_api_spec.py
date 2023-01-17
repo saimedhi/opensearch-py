@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 170")
 """
 Dynamically generated set of TestCases based on set of yaml files describing
 some integration tests. These files are shared among all official OpenSearch
@@ -127,6 +127,7 @@ FALSEY_VALUES = ("", None, False, 0, 0.0)
 
 
 class YamlRunner:
+    print("\n\n test_print............. 180")
     def __init__(self, client):
         self.client = client
         self.last_response = None

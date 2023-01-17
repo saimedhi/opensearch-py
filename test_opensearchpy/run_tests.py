@@ -24,8 +24,6 @@
 #  KIND, either express or implied.  See the License for the
 #  specific language governing permissions and limitations
 #  under the License.
-
-
 from __future__ import print_function
 
 import subprocess
@@ -33,8 +31,10 @@ import sys
 from os import environ
 from os.path import abspath, dirname, exists, join, pardir
 
+print("\n\n test_print............. 201")
 
 def fetch_opensearch_repo():
+    print("\n\n test_print............. 182")
     # user is manually setting YAML dir, don't tamper with it
     if "TEST_OPENSEARCH_YAML_DIR" in environ:
         return
@@ -52,14 +52,17 @@ def fetch_opensearch_repo():
     # fetching of yaml tests disabled, we'll run with what's there
     if environ.get("TEST_OPENSEARCH_NOFETCH", False):
         return
-
+    print("\n\n test_print............. 182_4")
     from test_opensearchpy.test_cases import SkipTest
+    print("\n\n test_print............. 182_5")
     from test_opensearchpy.test_server import get_client
-
+    print("\n\n test_print............. 182_3")
     # find out the sha of the running client
     try:
+        print("\n\n test_print............. 182_1")
         client = get_client()
         sha = client.info()["version"]["build_hash"]
+        print("\n\n test_print............. 182_2")
     except (SkipTest, KeyError):
         print("No running opensearch >1.X server...")
         return
@@ -77,7 +80,7 @@ def fetch_opensearch_repo():
         % repo_path,
         shell=True,
     )
-
+    print("\n\n test_print............. 183")
     # fetch the sha commit, version from info()
     print("Fetching opensearch repo...")
     subprocess.check_call("cd %s && git fetch origin %s" % (repo_path, sha), shell=True)
@@ -85,9 +88,10 @@ def fetch_opensearch_repo():
 
 def run_all(argv=None):
     sys.exitfunc = lambda: sys.stderr.write("Shutting down....\n")
-
+    print("\n\n test_print............. 184")
     # fetch yaml tests anywhere that's not GitHub Actions
     if "GITHUB_ACTION" not in environ:
+        print("\n\n test_print............. 185")
         fetch_opensearch_repo()
 
     # always insert coverage when running tests
@@ -95,6 +99,7 @@ def run_all(argv=None):
         junit_xml = join(
             abspath(dirname(dirname(__file__))), "junit", "opensearch-py-junit.xml"
         )
+        print("\n\n test_print............. 186")
         argv = [
             "pytest",
             "--cov=opensearch",
@@ -125,6 +130,7 @@ def run_all(argv=None):
 
         # Jenkins/Github actions, only run server tests
         if environ.get("TEST_TYPE") == "server":
+            print("\n\n test_print............. 187")
             test_dir = abspath(dirname(__file__))
             if secured:
                 argv.append(join(test_dir, "test_server_secured"))

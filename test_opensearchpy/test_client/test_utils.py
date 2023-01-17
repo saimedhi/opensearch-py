@@ -25,7 +25,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 147")
 from __future__ import unicode_literals
 
 from opensearchpy.client.utils import _bulk_body, _escape, _make_path, query_params
@@ -35,6 +35,7 @@ from ..test_cases import SkipTest, TestCase
 
 
 class TestQueryParams(TestCase):
+    print("\n\n test_print............. 148")
     def setup_method(self, _):
         self.calls = []
 
@@ -130,6 +131,7 @@ class TestQueryParams(TestCase):
 
 
 class TestMakePath(TestCase):
+    print("\n\n test_print............. 149")
     def test_handles_unicode(self):
         id = "中文"
         self.assertEqual(
@@ -146,6 +148,7 @@ class TestMakePath(TestCase):
 
 
 class TestEscape(TestCase):
+    print("\n\n test_print............. 150")
     def test_handles_ascii(self):
         string = "abc123"
         self.assertEqual(b"abc123", _escape(string))
@@ -160,6 +163,7 @@ class TestEscape(TestCase):
 
 
 class TestBulkBody(TestCase):
+    print("\n\n test_print............. 151")
     def test_proper_bulk_body_as_string_is_not_modified(self):
         string_body = '"{"index":{ "_index" : "test"}}\n{"field1": "value1"}"\n'
         self.assertEqual(string_body, _bulk_body(None, string_body))

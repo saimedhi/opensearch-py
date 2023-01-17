@@ -25,7 +25,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 206")
 import sys
 import uuid
 from datetime import datetime
@@ -54,6 +54,7 @@ def requires_numpy_and_pandas():
 
 
 class TestJSONSerializer(TestCase):
+    print("\n\n test_print............. 207")
     def test_datetime_serialization(self):
         self.assertEqual(
             '{"d":"2010-10-01T02:30:00"}',
@@ -204,6 +205,7 @@ class TestJSONSerializer(TestCase):
 
 
 class TestTextSerializer(TestCase):
+    print("\n\n test_print............. 208")
     def test_strings_are_left_untouched(self):
         self.assertEqual("你好", TextSerializer().dumps("你好"))
 
@@ -212,6 +214,7 @@ class TestTextSerializer(TestCase):
 
 
 class TestDeserializer(TestCase):
+    print("\n\n test_print............. 209")
     def setup_method(self, _):
         self.de = Deserializer(DEFAULT_SERIALIZERS)
 

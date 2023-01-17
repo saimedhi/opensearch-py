@@ -1,3 +1,4 @@
+echo "\n\n test_print............. 23"
 @ECHO OFF
 
 pushd %~dp0

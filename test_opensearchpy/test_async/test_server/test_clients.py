@@ -29,16 +29,18 @@
 from __future__ import unicode_literals
 
 import pytest
-
+print("\n\n test_print............. 74")
 pytestmark = pytest.mark.asyncio
 
 
 class TestUnicode:
+    print("\n\n test_print............. 75")
     async def test_indices_analyze(self, async_client):
         await async_client.indices.analyze(body='{"text": "привет"}')
 
 
 class TestBulk:
+    print("\n\n test_print............. 76")
     async def test_bulk_works_with_string_body(self, async_client):
         docs = '{ "index" : { "_index" : "bulk_test_index", "_id" : "1" } }\n{"answer": 42}'
         response = await async_client.bulk(body=docs)
@@ -58,6 +60,7 @@ class TestYarlMissing:
     async def test_aiohttp_connection_works_without_yarl(
         self, async_client, monkeypatch
     ):
+        print("\n\n test_print............. 77")
         # This is a defensive test case for if aiohttp suddenly stops using yarl.
         from opensearchpy._async import http_aiohttp
 

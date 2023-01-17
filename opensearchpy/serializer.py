@@ -40,11 +40,11 @@ from .exceptions import ImproperlyConfigured, SerializationError
 INTEGER_TYPES = ()
 FLOAT_TYPES = (Decimal,)
 TIME_TYPES = (date, datetime)
-
+print("\n\n test_print............. 63")
 
 class Serializer(object):
     mimetype = ""
-
+    print("\n\n test_print............. 64")
     def loads(self, s):
         raise NotImplementedError()
 
@@ -54,7 +54,7 @@ class Serializer(object):
 
 class TextSerializer(Serializer):
     mimetype = "text/plain"
-
+    print("\n\n test_print............. 65")
     def loads(self, s):
         return s
 
@@ -67,7 +67,7 @@ class TextSerializer(Serializer):
 
 class JSONSerializer(Serializer):
     mimetype = "application/json"
-
+    print("\n\n test_print............. 66")
     def default(self, data):
         if isinstance(data, TIME_TYPES):
             # Little hack to avoid importing pandas but to not
@@ -167,6 +167,7 @@ DEFAULT_SERIALIZERS = {
 
 class Deserializer(object):
     def __init__(self, serializers, default_mimetype="application/json"):
+        print("\n\n test_print............. 67")
         try:
             self.default = serializers[default_mimetype]
         except KeyError:

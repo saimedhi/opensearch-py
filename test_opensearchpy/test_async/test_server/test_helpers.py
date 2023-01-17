@@ -36,12 +36,13 @@ from mock import MagicMock, patch
 
 from opensearchpy import TransportError, helpers
 from opensearchpy.helpers import ScanError
-
+print("\n\n test_print............. 78")
 pytestmark = pytest.mark.asyncio
 
 
 class AsyncMock(MagicMock):
     async def __call__(self, *args, **kwargs):
+        print("\n\n test_print............. 79")
         return super(AsyncMock, self).__call__(*args, **kwargs)
 
     def __await__(self):
@@ -66,6 +67,7 @@ class FailingBulkClient(object):
 
 
 class TestStreamingBulk(object):
+    print("\n\n test_print............. 80_1")
     async def test_actions_remain_unchanged(self, async_client):
         actions = [{"_id": 1}, {"_id": 2}]
         async for ok, item in helpers.async_streaming_bulk(
@@ -87,6 +89,7 @@ class TestStreamingBulk(object):
         ]
 
     async def test_documents_data_types(self, async_client):
+        print("\n\n test_print............. 81")
         async def async_gen():
             for x in range(100):
                 await asyncio.sleep(0)
@@ -121,6 +124,7 @@ class TestStreamingBulk(object):
         ]
 
     async def test_all_errors_from_chunk_are_raised_on_failure(self, async_client):
+        print("\n\n test_print............. 82")
         await async_client.indices.create(
             "i",
             {

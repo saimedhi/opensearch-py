@@ -40,6 +40,7 @@ class IndicesClient(NamespacedClient):
             which the analysis should be performed
         :arg index: The name of the index to scope the operation
         """
+        print("\n\n test_print............. 32")
         return self.transport.perform_request(
             "POST",
             _make_path(index, "_analyze"),

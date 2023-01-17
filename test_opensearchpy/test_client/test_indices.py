@@ -26,9 +26,10 @@
 
 
 from test_opensearchpy.test_cases import OpenSearchTestCase
-
+print("\n\n test_print............. 139")
 
 class TestIndices(OpenSearchTestCase):
+    print("\n\n test_print............. 140")
     def test_create_one_index(self):
         self.client.indices.create("test-index")
         self.assert_url_called("PUT", "/test-index")

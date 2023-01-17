@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 155")
 import os
 import time
 
@@ -44,6 +44,7 @@ OPENSEARCH_REST_API_TESTS = []
 
 @pytest.fixture(scope="session")
 def sync_client_factory():
+    print("\n\n test_print............. 156")
     client = None
     try:
         # Configure the client optionally with an HTTP conn class
@@ -84,6 +85,7 @@ def sync_client_factory():
 
 @pytest.fixture(scope="function")
 def sync_client(sync_client_factory):
+    print("\n\n test_print............. 157")
     try:
         yield sync_client_factory
     finally:

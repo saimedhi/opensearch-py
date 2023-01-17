@@ -8,9 +8,10 @@
 # GitHub history for details.
 
 from test_opensearchpy.test_cases import OpenSearchTestCase
-
+print("\n\n test_print............. 143")
 
 class TestAlerting(OpenSearchTestCase):
+    print("\n\n test_print............. 144")
     def test_create_monitor(self):
         # Test Post Method
         self.client.alerting.create_monitor({})

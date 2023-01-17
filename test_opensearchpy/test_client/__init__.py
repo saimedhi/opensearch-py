@@ -32,9 +32,10 @@ import warnings
 from opensearchpy.client import OpenSearch, _normalize_hosts
 
 from ..test_cases import OpenSearchTestCase, TestCase
-
+print("\n\n test_print............. 133")
 
 class TestNormalizeHosts(TestCase):
+    print("\n\n test_print............. 134")
     def test_none_uses_defaults(self):
         self.assertEqual([{}], _normalize_hosts(None))
 
@@ -78,6 +79,7 @@ class TestNormalizeHosts(TestCase):
 
 
 class TestClient(OpenSearchTestCase):
+    print("\n\n test_print............. 135")
     def test_request_timeout_is_passed_through_unescaped(self):
         self.client.ping(request_timeout=0.1)
         calls = self.assert_url_called("HEAD", "/")

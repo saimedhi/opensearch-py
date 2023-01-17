@@ -30,8 +30,9 @@ import pytest
 
 from test_opensearchpy.test_cases import OpenSearchTestCase
 
-
+print("\n\n test_print............. 141")
 class TestOverriddenUrlTargets(OpenSearchTestCase):
+    print("\n\n test_print............. 142")
     def test_create(self):
         self.client.create(index="test-index", id="test-id", body={})
         self.assert_url_called("PUT", "/test-index/_create/test-id")

@@ -26,21 +26,23 @@
 
 
 # type: ignore
-
+print("\n\n test_print............. 152_10")
 import os
 import time
 from unittest import SkipTest, TestCase
 
 from opensearchpy import OpenSearch
 from opensearchpy.exceptions import ConnectionError
-
+print("\n\n test_print............. 152_11")
 if "OPENSEARCH_URL" in os.environ:
     OPENSEARCH_URL = os.environ["OPENSEARCH_URL"]
 else:
+    print("\n\n test_print............. 152_11_1")
     OPENSEARCH_URL = "https://elastic:changeme@localhost:9200"
-
+print("\n\n test_print............. 152_12")
 
 def get_test_client(nowait=False, **kwargs):
+    print("\n\n test_print............. 152_13")
     # construct kwargs from the environment
     kw = {"timeout": 30}
 
@@ -67,17 +69,21 @@ def get_test_client(nowait=False, **kwargs):
 
 
 class OpenSearchTestCase(TestCase):
+    print("\n\n test_print............. 152_14")
     @staticmethod
     def _get_client():
+        print("\n\n test_print............. 152_15")
         return get_test_client()
-
+    print("\n\n test_print............. 152_16")
     @classmethod
     def setup_class(cls):
+        print("\n\n test_print............. 152_17")
         cls.client = cls._get_client()
-
+    print("\n\n test_print............. 152_18")
     def teardown_method(self, _):
         # Hidden indices expanded in wildcards in OpenSearch 7.7
         expand_wildcards = ["open", "closed"]
+        print("\n\n test_print............. 152_19")
         if self.opensearch_version() >= (1, 0):
             expand_wildcards.append("hidden")
 
@@ -85,7 +91,7 @@ class OpenSearchTestCase(TestCase):
             index="*", ignore=404, expand_wildcards=expand_wildcards
         )
         self.client.indices.delete_template(name="*", ignore=404)
-
+    print("\n\n test_print............. 152_20")
     def opensearch_version(self):
         if not hasattr(self, "_opensearch_version"):
             self._opensearch_version = opensearch_version(self.client)
@@ -93,6 +99,7 @@ class OpenSearchTestCase(TestCase):
 
 
 def _get_version(version_string):
+    print("\n\n test_print............. 152_21")
     if "." not in version_string:
         return ()
     version = version_string.strip().split(".")
@@ -100,13 +107,18 @@ def _get_version(version_string):
 
 
 def opensearch_version(client):
+    print("\n\n test_print............. 152_22")
     return _get_version(client.info()["version"]["number"])
 
-
+print("\n\n test_print............. 152_23")
 if "OPENSEARCH_VERSION" in os.environ:
+    print("\n\n test_print............. 152_24")
     OPENSEARCH_VERSION = _get_version(os.environ["OPENSEARCH_VERSION"])
 else:
+    print("\n\n test_print............. 152_25")
     client = OpenSearch(
         OPENSEARCH_URL,
     )
+    print("\n\n test_print............. 152_27")
     OPENSEARCH_VERSION = opensearch_version(client)
+print("\n\n test_print............. 152_26")

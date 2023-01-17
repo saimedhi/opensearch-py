@@ -52,7 +52,7 @@ if not _tracer_already_configured:
 
 _WARNING_RE = re.compile(r"\"([^\"]*)\"")
 
-
+print("\n\n test_print............. 35")
 class Connection(object):
     """
     Class responsible for maintaining a connection to an OpenSearch node. It
@@ -83,6 +83,7 @@ class Connection(object):
         opaque_id=None,
         **kwargs
     ):
+        print("\n\n test_print............. 36")
         if port is None:
             port = 9200
 

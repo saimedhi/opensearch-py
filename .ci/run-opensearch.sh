@@ -4,7 +4,7 @@
 # to form a cluster suitable for running the REST API tests.
 #
 # Export the NUMBER_OF_NODES variable to start more than 1 node
-
+print("\n\n test_print............. 15")
 script_path=$(dirname $(realpath -s $0))
 source $script_path/functions/imports.sh
 set -euo pipefail
@@ -29,7 +29,7 @@ environment=($(cat <<-END
   --env action.destructive_requires_name=false
 END
 ))
-
+print("\n\n test_print............. 16")
 if [[ "$SECURE_INTEGRATION" == "false" ]] && [[ "$CLUSTER" == "opensearch" ]] && [[ "$IS_UNRELEASED" == "false" ]]; then
   security=($(cat <<-END
     --env plugins.security.disabled=true

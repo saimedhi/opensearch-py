@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 217")
 """A command line tool for building and verifying releases
 Can be used for building both 'opensearchpy' and 'opensearchpyX' dists.
 Only requires 'name' in 'setup.py' and the directory to be changed.
@@ -44,6 +44,7 @@ tmp_dir = None
 
 @contextlib.contextmanager
 def set_tmp_dir():
+    print("\n\n test_print............. 218")
     global tmp_dir
     tmp_dir = tempfile.mkdtemp()
     yield tmp_dir
@@ -52,6 +53,7 @@ def set_tmp_dir():
 
 
 def run(*argv, expect_exit_code=0):
+    print("\n\n test_print............. 219")
     global tmp_dir
     if tmp_dir is None:
         os.chdir(base_dir)
@@ -70,6 +72,7 @@ def run(*argv, expect_exit_code=0):
 
 
 def test_dist(dist):
+    print("\n\n test_print............. 220")
     with set_tmp_dir() as tmp_dir:
         dist_name = re.match(
             r"^(opensearchpy\d*)-",
@@ -179,6 +182,7 @@ def test_dist(dist):
 
 
 def main():
+    print("\n\n test_print............. 221")
     run("git", "checkout", "--", "setup.py", "opensearchpy/")
     run("rm", "-rf", "build/", "dist/*", "*.egg-info", ".eggs")
 
@@ -279,7 +283,7 @@ def main():
         run("git", "checkout", "--", "setup.py", "opensearchpy/")
         if suffix:
             run("rm", "-rf", "opensearchpy%s/" % suffix)
-
+    print("\n\n test_print............. 222")
     # Test everything that got created
     dists = os.listdir(os.path.join(base_dir, "dist"))
     assert len(dists) == 4

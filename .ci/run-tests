@@ -3,6 +3,7 @@
 # Entrypoint to run integration tests
 
 # Default environment variables
+print("\n\n test_print............. 19")
 export TEST_SUITE="${TEST_SUITE:=oss}"
 export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=Urllib3HttpConnection}"
@@ -10,8 +11,10 @@ export CLUSTER="${CLUSTER:-opensearch}"
 export SECURE_INTEGRATION="${1:-false}"
 export OPENSEARCH_VERSION="${2:-latest}"
 if [[ "$SECURE_INTEGRATION" == "true" ]]; then
+    print("\n\n test_print............. 20")
     export OPENSEARCH_URL_EXTENSION="https"
 else
+    print("\n\n test_print............. 21")
     export OPENSEARCH_URL_EXTENSION="http"
 fi
 
@@ -29,6 +32,7 @@ echo -e "\033[1m>>>>> Start server container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0
 DETACH=true bash .ci/run-opensearch.sh
 
 if [[ -n "$RUNSCRIPTS" ]]; then
+  print("\n\n test_print............. 22")
   for RUNSCRIPT in ${RUNSCRIPTS//,/ } ; do
     echo -e "\033[1m>>>>> Running run-$RUNSCRIPT.sh >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
     CONTAINER_NAME=${RUNSCRIPT} \

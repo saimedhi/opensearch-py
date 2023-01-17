@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 178")
 from typing import Any, Dict, Generator
 
 from opensearchpy import ConnectionPool, OpenSearch, RequestsHttpConnection, Transport
@@ -34,6 +34,7 @@ client = OpenSearch(
     [{"host": "localhost", "port": 9443}],
     transport_class=Transport,
 )
+print("\n\n test_print............. 179")
 t = Transport(
     [{}],
     connection_class=RequestsHttpConnection,

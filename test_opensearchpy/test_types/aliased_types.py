@@ -23,7 +23,7 @@
 #  KIND, either express or implied.  See the License for the
 #  specific language governing permissions and limitations
 #  under the License.
-
+print("\n\n test_print............. 174")
 
 from typing import Any, AsyncGenerator, Dict, Generator
 
@@ -51,6 +51,7 @@ client = OpenSearch(
     [{"host": "localhost", "port": 9443}],
     transport_class=Transport,
 )
+print("\n\n test_print............. 175")
 t = Transport(
     [{}],
     connection_class=RequestsHttpConnection,

@@ -45,7 +45,7 @@ from ...test_server.test_rest_api_spec import (
     YAML_TEST_SPECS,
     YamlRunner,
 )
-
+print("\n\n test_print............. 83")
 pytestmark = pytest.mark.asyncio
 
 OPENSEARCH_VERSION = None
@@ -58,6 +58,7 @@ async def await_if_coro(x):
 
 
 class AsyncYamlRunner(YamlRunner):
+    print("\n\n test_print............. 84")
     async def setup(self):
         # Pull skips from individual tests to not do unnecessary setup.
         skip_code = []
@@ -118,6 +119,7 @@ class AsyncYamlRunner(YamlRunner):
                 raise RuntimeError("Invalid action type %r" % (action_type,))
 
     async def run_do(self, action):
+        print("\n\n test_print............. 85")
         api = self.client
         headers = action.pop("headers", None)
         catch = action.pop("catch", None)

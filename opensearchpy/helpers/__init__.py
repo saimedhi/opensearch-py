@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 152_6")
 import sys
 
 from .actions import (
@@ -40,7 +40,7 @@ from .actions import (
 from .asyncsigner import AWSV4SignerAsyncAuth
 from .errors import BulkIndexError, ScanError
 from .signer import AWSV4SignerAuth
-
+print("\n\n test_print............. 152_7")
 __all__ = [
     "BulkIndexError",
     "ScanError",

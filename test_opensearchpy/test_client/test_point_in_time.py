@@ -8,9 +8,10 @@
 # GitHub history for details.
 
 from test_opensearchpy.test_cases import OpenSearchTestCase
-
+print("\n\n test_print............. 145")
 
 class TestPointInTime(OpenSearchTestCase):
+    print("\n\n test_print............. 146")
     def test_create_one_point_in_time(self):
         index_name = "test-index"
         self.client.create_point_in_time(index=index_name)

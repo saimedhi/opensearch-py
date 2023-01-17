@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 161")
 from mock import patch
 
 from opensearchpy import TransportError, helpers
@@ -35,6 +35,7 @@ from . import OpenSearchTestCase
 
 
 class FailingBulkClient(object):
+    print("\n\n test_print............. 162")
     def __init__(
         self, client, fail_at=(2,), fail_with=TransportError(599, "Error!", {})
     ):
@@ -52,6 +53,7 @@ class FailingBulkClient(object):
 
 
 class TestStreamingBulk(OpenSearchTestCase):
+    print("\n\n test_print............. 163")
     def test_actions_remain_unchanged(self):
         actions = [{"_id": 1}, {"_id": 2}]
         for ok, item in helpers.streaming_bulk(
@@ -229,6 +231,7 @@ class TestStreamingBulk(OpenSearchTestCase):
 
 
 class TestBulk(OpenSearchTestCase):
+    print("\n\n test_print............. 164")
     def test_bulk_works_with_single_item(self):
         docs = [{"answer": 42, "_id": 1}]
         success, failed = helpers.bulk(
@@ -365,6 +368,7 @@ class TestBulk(OpenSearchTestCase):
 
 
 class TestScan(OpenSearchTestCase):
+    print("\n\n test_print............. 165")
     mock_scroll_responses = [
         {
             "_scroll_id": "dummy_id",
@@ -640,6 +644,7 @@ class TestScan(OpenSearchTestCase):
 
 
 class TestReindex(OpenSearchTestCase):
+    print("\n\n test_print............. 166")
     def setup_method(self, _):
         bulk = []
         for x in range(100):
@@ -710,6 +715,7 @@ class TestReindex(OpenSearchTestCase):
 
 
 class TestParentChildReindex(OpenSearchTestCase):
+    print("\n\n test_print............. 167")
     def setup_method(self, _):
         body = {
             "settings": {"number_of_shards": 1, "number_of_replicas": 0},

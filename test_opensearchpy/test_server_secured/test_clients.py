@@ -7,7 +7,7 @@
 #
 # Modifications Copyright OpenSearch Contributors. See
 # GitHub history for details.
-
+print("\n\n test_print............. 172")
 from unittest import TestCase
 
 from opensearchpy import OpenSearch
@@ -15,6 +15,7 @@ from opensearchpy.helpers.test import OPENSEARCH_URL
 
 
 class TestSecurity(TestCase):
+    print("\n\n test_print............. 173")
     def test_security(self):
         client = OpenSearch(
             OPENSEARCH_URL,

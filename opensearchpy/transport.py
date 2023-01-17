@@ -38,8 +38,9 @@ from .exceptions import (
 )
 from .serializer import DEFAULT_SERIALIZERS, Deserializer, JSONSerializer
 
-
+print("\n\n test_print............. 68")
 def get_host_info(node_info, host):
+    print("\n\n test_print............. 69")
     """
     Simple callback that takes the node info from `/_cluster/nodes` and a
     parsed connection information and return the connection information. If
@@ -68,6 +69,7 @@ class Transport(object):
     """
 
     DEFAULT_CONNECTION_CLASS = Urllib3HttpConnection
+    print("\n\n test_print............. 70")
 
     def __init__(
         self,
@@ -361,7 +363,7 @@ class Transport(object):
         method, params, body, ignore, timeout = self._resolve_request_args(
             method, params, body
         )
-
+        print("\n\n test_print............. 80")
         for attempt in range(self.max_retries + 1):
             connection = self.get_connection()
 

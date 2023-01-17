@@ -33,12 +33,13 @@ import opensearchpy
 from opensearchpy.helpers.test import OPENSEARCH_URL
 
 from ...utils import wipe_cluster
-
+print("\n\n test_print............. 71")
 pytestmark = pytest.mark.asyncio
 
 
 @pytest.fixture(scope="function")
 async def async_client():
+    print("\n\n test_print............. 72")
     client = None
     try:
         if not hasattr(opensearchpy, "AsyncOpenSearch"):

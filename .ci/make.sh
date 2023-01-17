@@ -23,7 +23,7 @@
 # ------------------------------------------------------- #
 # Bootstrap
 # ------------------------------------------------------- #
-
+print("\n\n test_print............. 13")
 script_path=$(dirname "$(realpath -s "$0")")
 repo=$(realpath "$script_path/../")
 
@@ -49,7 +49,7 @@ echo -e "\033[34;1mINFO:\033[0m OUTPUT_DIR ${OUTPUT_DIR}\033[0m"
 # ------------------------------------------------------- #
 # Parse Command
 # ------------------------------------------------------- #
-
+print("\n\n test_print............. 14")
 case $CMD in
     clean)
         echo -e "\033[36;1mTARGET: clean workspace $output_folder\033[0m"

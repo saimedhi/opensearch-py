@@ -8,7 +8,7 @@
 # Modifications Copyright OpenSearch Contributors. See
 # GitHub history for details.
 
-
+print("\n\n test_print............. 168")
 from __future__ import unicode_literals
 
 import unittest
@@ -19,6 +19,7 @@ from . import OpenSearchTestCase
 
 
 class TestAlertingPlugin(OpenSearchTestCase):
+    print("\n\n test_print............. 169")
     @unittest.skipUnless(
         (OPENSEARCH_VERSION) and (OPENSEARCH_VERSION < (2, 0, 0)),
         "Plugin not supported for opensearch version",

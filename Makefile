@@ -1,3 +1,4 @@
+echo "\n\n test_print............. 235"
 clean:
 	docker-compose down --remove-orphans --volumes
 

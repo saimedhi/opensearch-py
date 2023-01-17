@@ -24,13 +24,14 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 213")
 import time
 
 from opensearchpy import OpenSearch
 
 
 def wipe_cluster(client):
+    print("\n\n test_print............. 214")
     """Wipes a cluster clean between test cases"""
     close_after_wipe = False
     try:
@@ -59,6 +60,7 @@ def wipe_cluster(client):
 
 
 def wipe_cluster_settings(client):
+    print("\n\n test_print............. 215")
     settings = client.cluster.get_settings()
     new_settings = {}
     for name, value in settings.items():
@@ -71,6 +73,7 @@ def wipe_cluster_settings(client):
 
 
 def wipe_snapshots(client):
+    print("\n\n test_print............. 216")
     """Deletes all the snapshots and repositories from the cluster"""
     in_progress_snapshots = []
 

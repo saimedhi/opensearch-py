@@ -25,7 +25,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 242")
 import re
 from os.path import abspath, dirname, join
 
@@ -41,7 +41,7 @@ with open(join(base_dir, package_name.replace("-", ""), "_version.py")) as f:
 
 with open(join(base_dir, "README.md")) as f:
     long_description = f.read().strip()
-
+print("\n\n test_print............. 243")
 module_dir = package_name.replace("-", "")
 packages = [
     package
@@ -67,7 +67,7 @@ async_require = ["aiohttp>=3,<4"]
 
 docs_require = ["sphinx", "sphinx_rtd_theme", "myst_parser", "sphinx_copybutton"]
 generate_require = ["black", "jinja2"]
-
+print("\n\n test_print............. 244")
 setup(
     name=package_name,
     description="Python low-level client for OpenSearch",
@@ -118,3 +118,4 @@ setup(
         "kerberos": ["requests_kerberos"],
     },
 )
+print("\n\n test_print............. 244_1")

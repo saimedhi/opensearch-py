@@ -16,9 +16,10 @@ import pytest
 from ..test_cases import TestCase
 
 pytestmark = pytest.mark.asyncio
-
+print("\n\n test_print............. 87")
 
 class TestAsyncSigner(TestCase):
+    print("\n\n test_print............. 88")
     @pytest.mark.skipif(
         sys.version_info < (3, 6), reason="AWSV4SignerAsyncAuth requires python3.6+"
     )

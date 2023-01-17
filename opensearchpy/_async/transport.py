@@ -91,6 +91,7 @@ class AsyncTransport(Transport):
         when creating and instance unless overridden by that connection's
         options provided as part of the hosts parameter.
         """
+        print("\n\n test_print............. 30")
         self.sniffing_task = None
         self.loop = None
         self._async_init_called = False
@@ -116,6 +117,7 @@ class AsyncTransport(Transport):
         """
         # Detect the async loop we're running in and set it
         # on all already created HTTP connections.
+        print("\n\n test_print............. 31")
         self.loop = get_running_loop()
         self.kwargs["loop"] = self.loop
 

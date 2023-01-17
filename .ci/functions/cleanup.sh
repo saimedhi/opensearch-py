@@ -8,18 +8,21 @@
 # - Initial version after refactor
 
 function cleanup_volume {
+  print("\n\n test_print............. 1")
   if [[ "$(docker volume ls -q -f name=$1)" ]]; then
     echo -e "\033[34;1mINFO:\033[0m Removing volume $1\033[0m"
     (docker volume rm "$1") || true
   fi
 }
 function container_running {
+  print("\n\n test_print............. 2")
   if [[ "$(docker ps -q -f name=$1)" ]]; then
     return 0;
     else return 1;
   fi
 }
 function cleanup_node {
+  print("\n\n test_print............. 3")
   if container_running "$1"; then
     echo -e "\033[34;1mINFO:\033[0m Removing container $1\033[0m"
     (docker container rm --force --volumes "$1") || true
@@ -30,6 +33,7 @@ function cleanup_node {
   fi
 }
 function cleanup_network {
+  print("\n\n test_print............. 4")
   if [[ "$(docker network ls -q -f name=$1)" ]]; then
     echo -e "\033[34;1mINFO:\033[0m Removing network $1\033[0m"
     (docker network rm "$1") || true
@@ -37,6 +41,7 @@ function cleanup_network {
 }
 
 function cleanup_trap {
+  print("\n\n test_print............. 5")
   status=$?
   set +x
   if [[ "$DETACH" != "true" ]]; then
@@ -53,6 +58,7 @@ function cleanup_trap {
   fi
 };
 function cleanup_all_in_network {
+  print("\n\n test_print............. 6")
 
   if [[ -z "$(docker network ls -q -f name="^$1\$")" ]]; then
     echo -e "\033[34;1mINFO:\033[0m $1 is already deleted\033[0m"

@@ -25,7 +25,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 200")
 import threading
 import time
 
@@ -41,6 +41,7 @@ lock_side_effect = threading.Lock()
 
 
 def mock_process_bulk_chunk(*args, **kwargs):
+    print("\n\n test_print............. 201_1")
     """
     Threadsafe way of mocking process bulk chunk:
     https://stackoverflow.com/questions/39332139/thread-safe-version-of-mock-call-count
@@ -56,6 +57,7 @@ mock_process_bulk_chunk.call_count = 0
 
 
 class TestParallelBulk(TestCase):
+    print("\n\n test_print............. 202")
     @mock.patch(
         "opensearchpy.helpers.actions._process_bulk_chunk",
         side_effect=mock_process_bulk_chunk,
@@ -83,6 +85,7 @@ class TestParallelBulk(TestCase):
 
 
 class TestChunkActions(TestCase):
+    print("\n\n test_print............. 203")
     def setup_method(self, _):
         self.actions = [({"index": {}}, {"some": u"datá", "i": i}) for i in range(100)]  # fmt: skip
 
@@ -215,6 +218,7 @@ class TestChunkActions(TestCase):
 
 
 class TestExpandActions(TestCase):
+    print("\n\n test_print............. 205")
     def test_string_actions_are_marked_as_simple_inserts(self):
         self.assertEqual(
             ('{"index":{}}', "whatever"), helpers.expand_action("whatever")

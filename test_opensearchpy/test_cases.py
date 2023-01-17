@@ -24,15 +24,17 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 188")
 from collections import defaultdict
 from unittest import SkipTest  # noqa: F401
 from unittest import TestCase
-
+print("\n\n test_print............. 188_1")
 from opensearchpy import OpenSearch
+print("\n\n test_print............. 188_2")
 
 
 class DummyTransport(object):
+    print("\n\n test_print............. 189")
     def __init__(self, hosts, responses=None, **kwargs):
         self.hosts = hosts
         self.responses = responses
@@ -49,6 +51,7 @@ class DummyTransport(object):
 
 
 class OpenSearchTestCase(TestCase):
+    print("\n\n test_print............. 190")
     def setUp(self):
         super(OpenSearchTestCase, self).setUp()
         self.client = OpenSearch(transport_class=DummyTransport)
@@ -64,6 +67,7 @@ class OpenSearchTestCase(TestCase):
 
 
 class TestOpenSearchTestCase(OpenSearchTestCase):
+    print("\n\n test_print............. 191")
     def test_our_transport_used(self):
         self.assertIsInstance(self.client.transport, DummyTransport)
 

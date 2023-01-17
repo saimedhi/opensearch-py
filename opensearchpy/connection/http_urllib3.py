@@ -41,7 +41,7 @@ from ..exceptions import (
     SSLError,
 )
 from .base import Connection
-
+print("\n\n test_print............. 42")
 # sentinel value for `verify_certs` and `ssl_show_warn`.
 # This is used to detect if a user is passing in a value
 # for SSL kwargs if also using an SSLContext.
@@ -52,7 +52,7 @@ SSL_SHOW_WARN_DEFAULT = object()
 def create_ssl_context(**kwargs):
     """
     A helper function around creating an SSL context
-
+    print("\n\n test_print............. 43")
     https://docs.python.org/3/library/ssl.html#context-creation
 
     Accepts kwargs in the same manner as `create_default_context`.
@@ -128,6 +128,7 @@ class Urllib3HttpConnection(Connection):
             opaque_id=opaque_id,
             **kwargs
         )
+        print("\n\n test_print............. 44")
         if http_auth is not None:
             if isinstance(http_auth, (tuple, list)):
                 http_auth = ":".join(http_auth)

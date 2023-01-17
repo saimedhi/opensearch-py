@@ -42,7 +42,7 @@ from opensearchpy import AIOHttpConnection, __versionstr__
 from opensearchpy.compat import reraise_exceptions
 from opensearchpy.connection import Connection
 from opensearchpy.exceptions import ConnectionError
-
+print("\n\n test_print............. 89")
 pytestmark = pytest.mark.asyncio
 
 
@@ -52,6 +52,7 @@ def gzip_decompress(data):
 
 
 class TestAIOHttpConnection:
+    print("\n\n test_print............. 90")
     async def _get_mock_connection(self, connection_params={}, response_body=b"{}"):
         con = AIOHttpConnection(**connection_params)
         await con._create_aiohttp_session()
@@ -77,6 +78,7 @@ class TestAIOHttpConnection:
         return con
 
     async def test_ssl_context(self):
+        print("\n\n test_print............. 91")
         try:
             context = ssl.create_default_context()
         except AttributeError:
@@ -93,10 +95,12 @@ class TestAIOHttpConnection:
         assert con.session.connector._ssl == context
 
     def test_opaque_id(self):
+        print("\n\n test_print............. 92")
         con = AIOHttpConnection(opaque_id="app-1")
         assert con.headers["x-opaque-id"] == "app-1"
 
     async def test_no_http_compression(self):
+        print("\n\n test_print............. 93")
         con = await self._get_mock_connection()
         assert not con.http_compress
         assert "accept-encoding" not in con.headers
@@ -110,6 +114,7 @@ class TestAIOHttpConnection:
         assert "content-encoding" not in kwargs["headers"]
 
     async def test_http_compression(self):
+        print("\n\n test_print............. 94")
         con = await self._get_mock_connection({"http_compress": True})
         assert con.http_compress
         assert con.headers["accept-encoding"] == "gzip,deflate"
@@ -135,6 +140,7 @@ class TestAIOHttpConnection:
         assert "content-encoding" not in kwargs["headers"]
 
     async def test_url_prefix(self):
+        print("\n\n test_print............. 95")
         con = await self._get_mock_connection(
             connection_params={"url_prefix": "/_search/"}
         )
@@ -166,6 +172,7 @@ class TestAIOHttpConnection:
         } == con.headers
 
     def test_http_auth(self):
+        print("\n\n test_print............. 96")
         con = AIOHttpConnection(http_auth="username:secret")
         assert {
             "authorization": "Basic dXNlcm5hbWU6c2VjcmV0",
@@ -193,6 +200,7 @@ class TestAIOHttpConnection:
         } == con.headers
 
     def test_uses_https_if_verify_certs_is_off(self):
+        print("\n\n test_print............. 97")
         with warnings.catch_warnings(record=True) as w:
             con = AIOHttpConnection(use_ssl=True, verify_certs=False)
             assert 1 == len(w)
@@ -206,6 +214,7 @@ class TestAIOHttpConnection:
         assert con.host == "https://localhost:9200"
 
     async def test_nowarn_when_test_uses_https_if_verify_certs_is_off(self):
+        print("\n\n test_print............. 98")
         with warnings.catch_warnings(record=True) as w:
             con = AIOHttpConnection(
                 use_ssl=True, verify_certs=False, ssl_show_warn=False
@@ -216,16 +225,19 @@ class TestAIOHttpConnection:
         assert isinstance(con.session, aiohttp.ClientSession)
 
     def test_doesnt_use_https_if_not_specified(self):
+        print("\n\n test_print............. 99")
         con = AIOHttpConnection()
         assert not con.use_ssl
 
     def test_no_warning_when_using_ssl_context(self):
+        print("\n\n test_print............. 100")
         ctx = ssl.create_default_context()
         with warnings.catch_warnings(record=True) as w:
             AIOHttpConnection(ssl_context=ctx)
             assert w == [], str([x.message for x in w])
 
     def test_warns_if_using_non_default_ssl_kwargs_with_ssl_context(self):
+        print("\n\n test_print............. 101")
         for kwargs in (
             {"ssl_show_warn": False},
             {"ssl_show_warn": True},
@@ -249,6 +261,7 @@ class TestAIOHttpConnection:
 
     @patch("ssl.SSLContext.load_verify_locations")
     def test_uses_given_ca_certs(self, load_verify_locations, tmp_path):
+        print("\n\n test_print............. 102")
         path = tmp_path / "ca_certs.pem"
         path.touch()
         AIOHttpConnection(use_ssl=True, ca_certs=str(path))
@@ -256,6 +269,7 @@ class TestAIOHttpConnection:
 
     @patch("ssl.SSLContext.load_verify_locations")
     def test_uses_default_ca_certs(self, load_verify_locations):
+        print("\n\n test_print............. 103")
         AIOHttpConnection(use_ssl=True)
         load_verify_locations.assert_called_once_with(
             cafile=Connection.default_ca_certs()
@@ -263,11 +277,13 @@ class TestAIOHttpConnection:
 
     @patch("ssl.SSLContext.load_verify_locations")
     def test_uses_no_ca_certs(self, load_verify_locations):
+        print("\n\n test_print............. 104")
         AIOHttpConnection(use_ssl=True, verify_certs=False)
         load_verify_locations.assert_not_called()
 
     @patch("opensearchpy.connection.base.logger")
     async def test_uncompressed_body_logged(self, logger):
+        print("\n\n test_print............. 105")
         con = await self._get_mock_connection(connection_params={"http_compress": True})
         await con.perform_request("GET", "/", body=b'{"example": "body"}')
 
@@ -300,7 +316,7 @@ class TestAIOHttpConnection:
 
 class TestConnectionHttpbin:
     """Tests the HTTP connection implementations against a live server E2E"""
-
+    print("\n\n test_print............. 106")
     async def httpbin_anything(self, conn, **kwargs):
         status, headers, data = await conn.perform_request("GET", "/anything", **kwargs)
         data = json.loads(data)
@@ -310,6 +326,7 @@ class TestConnectionHttpbin:
         return (status, data)
 
     async def test_aiohttp_connection(self):
+        print("\n\n test_print............. 107")
         # Defaults
         conn = AIOHttpConnection("httpbin.org", port=443, use_ssl=True)
         user_agent = conn._get_default_user_agent()
@@ -326,6 +343,7 @@ class TestConnectionHttpbin:
         conn = AIOHttpConnection(
             "httpbin.org", port=443, use_ssl=True, http_compress=False
         )
+        print("\n\n test_print............. 108")
         status, data = await self.httpbin_anything(conn)
         assert status == 200
         assert data["method"] == "GET"
@@ -339,6 +357,7 @@ class TestConnectionHttpbin:
         conn = AIOHttpConnection(
             "httpbin.org", port=443, use_ssl=True, http_compress=True
         )
+        print("\n\n test_print............. 109")
         status, data = await self.httpbin_anything(conn)
         assert status == 200
         assert data["headers"] == {
@@ -356,6 +375,7 @@ class TestConnectionHttpbin:
             http_compress=True,
             headers={"header1": "value1"},
         )
+        print("\n\n test_print............. 110")
         status, data = await self.httpbin_anything(
             conn, headers={"header2": "value2", "header1": "override!"}
         )
@@ -370,6 +390,7 @@ class TestConnectionHttpbin:
         }
 
     async def test_aiohttp_connection_error(self):
+        print("\n\n test_print............. 111")
         conn = AIOHttpConnection("not.a.host.name")
         with pytest.raises(ConnectionError):
             await conn.perform_request("GET", "/")

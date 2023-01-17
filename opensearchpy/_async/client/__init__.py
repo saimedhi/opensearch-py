@@ -47,6 +47,7 @@ logger = logging.getLogger("opensearch")
 
 
 class AsyncOpenSearch(object):
+    print("\n\n test_print............. 25")
     """
     OpenSearch low-level client. Provides a straightforward mapping from
     Python to OpenSearch REST endpoints.

@@ -1,3 +1,5 @@
+echo "\n\n test_print............. 246"
+
 TEST_SUITE:
   - oss
 

@@ -23,7 +23,7 @@
 #  KIND, either express or implied.  See the License for the
 #  specific language governing permissions and limitations
 #  under the License.
-
+print("\n\n test_print............. 192")
 
 import time
 
@@ -39,6 +39,7 @@ from .test_cases import TestCase
 
 
 class TestConnectionPool(TestCase):
+    print("\n\n test_print............. 193")
     def test_dummy_cp_raises_exception_on_more_connections(self):
         self.assertRaises(ImproperlyConfigured, DummyConnectionPool, [])
         self.assertRaises(

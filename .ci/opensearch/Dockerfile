@@ -1,3 +1,4 @@
+print("\n\n test_print............. 11")
 ARG OPENSEARCH_VERSION
 FROM opensearchproject/opensearch:$OPENSEARCH_VERSION
 

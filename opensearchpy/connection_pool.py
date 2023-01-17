@@ -29,7 +29,7 @@ import logging
 import random
 import threading
 import time
-
+print("\n\n test_print............. 51")
 try:
     from Queue import Empty, PriorityQueue
 except ImportError:
@@ -63,6 +63,7 @@ class ConnectionSelector(object):
         """
         :arg opts: dictionary of connection instances and their options
         """
+        print("\n\n test_print............. 53")
         self.connection_opts = opts
 
     def select(self, connections):
@@ -142,6 +143,7 @@ class ConnectionPool(object):
         :arg randomize_hosts: shuffle the list of connections upon arrival to
             avoid dog piling effect across processes
         """
+        print("\n\n test_print............. 52")
         if not connections:
             raise ImproperlyConfigured(
                 "No defined connections, you need to " "specify at least one host."
@@ -288,6 +290,7 @@ class ConnectionPool(object):
 
 class DummyConnectionPool(ConnectionPool):
     def __init__(self, connections, **kwargs):
+        print("\n\n test_print............. 53_1")
         if len(connections) != 1:
             raise ImproperlyConfigured(
                 "DummyConnectionPool needs exactly one " "connection defined."
@@ -314,7 +317,7 @@ class DummyConnectionPool(ConnectionPool):
 
 class EmptyConnectionPool(ConnectionPool):
     """A connection pool that is empty. Errors out if used."""
-
+    print("\n\n test_print............. 54")
     def __init__(self, *_, **__):
         self.connections = []
         self.connection_opts = []

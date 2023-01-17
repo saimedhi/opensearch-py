@@ -25,7 +25,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 194")
 import gzip
 import io
 import json
@@ -74,6 +74,7 @@ def gzip_decompress(data):
 
 
 class TestBaseConnection(TestCase):
+    print("\n\n test_print............. 195")
     def test_empty_warnings(self):
         con = Connection()
         with warnings.catch_warnings(record=True) as w:
@@ -468,6 +469,7 @@ class TestUrllib3Connection(TestCase):
 
 
 class TestRequestsConnection(TestCase):
+    print("\n\n test_print............. 196")
     def _get_mock_connection(
         self, connection_params={}, status_code=200, response_body=b"{}"
     ):
@@ -826,6 +828,7 @@ class TestRequestsConnection(TestCase):
 
 
 class TestConnectionHttpbin:
+    print("\n\n test_print............. 197")
     """Tests the HTTP connection implementations against a live server E2E"""
 
     def httpbin_anything(self, conn, **kwargs):

@@ -23,7 +23,7 @@
 #  KIND, either express or implied.  See the License for the
 #  specific language governing permissions and limitations
 #  under the License.
-
+print("\n\n test_print............. 230")
 
 """Script which verifies that all source files have a license header.
 Has two modes: 'fix' and 'check'. 'fix' fixes problems, 'check' will
@@ -50,6 +50,7 @@ license_header_lines = [
 
 
 def find_files_to_fix(sources: List[str]) -> Iterator[str]:
+    print("\n\n test_print............. 231")
     """Iterates over all files and dirs in 'sources' and returns
     only the filepaths that need fixing.
     """
@@ -65,6 +66,7 @@ def find_files_to_fix(sources: List[str]) -> Iterator[str]:
 
 
 def does_file_need_fix(filepath: str) -> bool:
+    print("\n\n test_print............. 232")
     if not re.search(r"\.pyi?$", filepath):
         return False
     with open(filepath, mode="r") as f:
@@ -84,6 +86,7 @@ def does_file_need_fix(filepath: str) -> bool:
 
 
 def add_header_to_file(filepath: str) -> None:
+    print("\n\n test_print............. 233")
     with open(filepath, mode="r") as f:
         lines = list(f)
     i = 0
@@ -98,6 +101,7 @@ def add_header_to_file(filepath: str) -> None:
 
 
 def main():
+    print("\n\n test_print............. 234")
     mode = sys.argv[1]
     assert mode in ("fix", "check")
     sources = [os.path.abspath(x) for x in sys.argv[2:]]

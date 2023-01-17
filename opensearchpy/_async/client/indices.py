@@ -29,6 +29,7 @@ from .utils import SKIP_IN_PATH, NamespacedClient, _make_path, query_params
 
 
 class IndicesClient(NamespacedClient):
+    print("\n\n test_print............. 27")
     @query_params()
     async def analyze(self, body=None, index=None, params=None, headers=None):
         """

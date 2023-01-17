@@ -24,7 +24,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 55")
 __all__ = [
     "ImproperlyConfigured",
     "OpenSearchException",
@@ -45,21 +45,21 @@ class ImproperlyConfigured(Exception):
     """
     Exception raised when the config passed to the client is inconsistent or invalid.
     """
-
+    print("\n\n test_print............. 56")
 
 class OpenSearchException(Exception):
     """
     Base class for all exceptions raised by this package's operations (doesn't
     apply to :class:`~opensearchpy.ImproperlyConfigured`).
     """
-
+    print("\n\n test_print............. 57")
 
 class SerializationError(OpenSearchException):
     """
     Data passed in failed to serialize properly in the ``Serializer`` being
     used.
     """
-
+    print("\n\n test_print............. 58")
 
 class TransportError(OpenSearchException):
     """
@@ -67,7 +67,7 @@ class TransportError(OpenSearchException):
     an actual connection error happens; in that case the ``status_code`` will
     be set to ``'N/A'``.
     """
-
+    print("\n\n test_print............. 59")
     @property
     def status_code(self):
         """
@@ -120,7 +120,7 @@ class ConnectionError(TransportError):
     exception from the underlying :class:`~opensearchpy.Connection`
     implementation is available as ``.info``.
     """
-
+    print("\n\n test_print............. 60")
     def __str__(self):
         return "ConnectionError(%s) caused by: %s(%s)" % (
             self.error,
@@ -131,11 +131,11 @@ class ConnectionError(TransportError):
 
 class SSLError(ConnectionError):
     """Error raised when encountering SSL errors."""
-
+    print("\n\n test_print............. 61")
 
 class ConnectionTimeout(ConnectionError):
     """A network timeout. Doesn't cause a node retry by default."""
-
+    print("\n\n test_print............. 62")
     def __str__(self):
         return "ConnectionTimeout caused by - %s(%s)" % (
             self.info.__class__.__name__,

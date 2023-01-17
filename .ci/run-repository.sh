@@ -10,7 +10,7 @@
 
 # When run in CI the test-matrix is used to define additional variables
 # TEST_SUITE -- defaults to `oss` in `run-tests`
-
+print("\n\n test_print............. 17")
 set -e
 
 echo -e "\033[34;1mINFO:\033[0m URL ${opensearch_url}\033[0m"
@@ -26,7 +26,7 @@ docker build \
        --tag opensearch-project/opensearch-py \
        --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
        .
-
+print("\n\n test_print............. 18")
 echo -e "\033[1m>>>>> Run [opensearch-project/opensearch-py container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
 
 mkdir -p junit

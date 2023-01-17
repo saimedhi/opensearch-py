@@ -25,7 +25,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-
+print("\n\n test_print............. 223")
 import contextlib
 import io
 import json
@@ -87,6 +87,7 @@ def is_valid_url(url):
 
 
 class Module:
+    print("\n\n test_print............. 224")
     def __init__(self, namespace, is_pyi=False):
         self.namespace = namespace
         self.is_pyi = is_pyi
@@ -151,6 +152,7 @@ class Module:
 
 
 class API:
+    print("\n\n test_print............. 225")
     def __init__(self, namespace, name, definition, is_pyi=False):
         self.namespace = namespace
         self.name = name
@@ -335,6 +337,7 @@ class API:
 
 @contextlib.contextmanager
 def download_artifact(version):
+    print("\n\n test_print............. 226")
     # Download the list of all artifacts for a version
     # and find the latest build URL for 'rest-resources-zip-*.zip'
     resp = http.request(
@@ -369,6 +372,7 @@ def download_artifact(version):
 
 
 def read_modules(version):
+    print("\n\n test_print............. 227")
     modules = {}
 
     with download_artifact(version) as path:
@@ -399,6 +403,7 @@ def read_modules(version):
 
 
 def dump_modules(modules):
+    print("\n\n test_print............. 228")
     for mod in modules.values():
         mod.dump()
 
@@ -432,5 +437,6 @@ def dump_modules(modules):
 
 
 if __name__ == "__main__":
+    print("\n\n test_print............. 229")
     version = sys.argv[1]
     dump_modules(read_modules(version))
