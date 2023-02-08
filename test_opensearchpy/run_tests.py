@@ -85,7 +85,6 @@ def fetch_opensearch_repo():
 
 def run_all(argv=None):
     sys.exitfunc = lambda: sys.stderr.write("Shutting down....\n")
-
     # fetch yaml tests anywhere that's not GitHub Actions
     if "GITHUB_ACTION" not in environ:
         fetch_opensearch_repo()
@@ -118,12 +117,14 @@ def run_all(argv=None):
                 "test_opensearchpy/test_server/",
                 "test_opensearchpy/test_server_secured/",
                 "test_opensearchpy/test_async/test_server/",
+                "test_opensearchpy/test_dsl/test_integration/",
             ]
         )
 
         # Jenkins/Github actions, only run server tests
         if environ.get("TEST_TYPE") == "server":
             test_dir = abspath(dirname(__file__))
+            argv.append(join(test_dir, "test_dsl/test_integration/"))
             if secured:
                 argv.append(join(test_dir, "test_server_secured"))
                 ignores.extend(

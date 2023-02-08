@@ -43,28 +43,94 @@ VERSION = __version__ = (_major, _minor, _patch)
 logger = logging.getLogger("opensearch")
 logger.addHandler(logging.NullHandler())
 
+from . import connections
+from .aggs import A
+from .analysis import analyzer, char_filter, normalizer, token_filter, tokenizer
 from .client import OpenSearch
 from .connection import Connection, RequestsHttpConnection, Urllib3HttpConnection
 from .connection_pool import ConnectionPool, ConnectionSelector, RoundRobinSelector
+from .document import Document, InnerDoc, MetaField
 from .exceptions import (
     AuthenticationException,
     AuthorizationException,
     ConflictError,
     ConnectionError,
     ConnectionTimeout,
+    IllegalOperation,
     ImproperlyConfigured,
     NotFoundError,
     OpenSearchDeprecationWarning,
+    OpenSearchDslException,
     OpenSearchException,
     OpenSearchWarning,
     RequestError,
     SerializationError,
     SSLError,
     TransportError,
+    UnknownDslObject,
+    ValidationException,
 )
+from .faceted_search import (
+    DateHistogramFacet,
+    Facet,
+    FacetedResponse,
+    FacetedSearch,
+    HistogramFacet,
+    NestedFacet,
+    RangeFacet,
+    TermsFacet,
+)
+from .field import (
+    Binary,
+    Boolean,
+    Byte,
+    Completion,
+    CustomField,
+    Date,
+    DateRange,
+    DenseVector,
+    Double,
+    DoubleRange,
+    Field,
+    Float,
+    FloatRange,
+    GeoPoint,
+    GeoShape,
+    HalfFloat,
+    Integer,
+    IntegerRange,
+    Ip,
+    IpRange,
+    Join,
+    Keyword,
+    Long,
+    LongRange,
+    Murmur3,
+    Nested,
+    Object,
+    Percolator,
+    RangeField,
+    RankFeature,
+    RankFeatures,
+    ScaledFloat,
+    SearchAsYouType,
+    Short,
+    SparseVector,
+    Text,
+    TokenCount,
+    construct_field,
+)
+from .function import SF
 from .helpers import AWSV4SignerAsyncAuth, AWSV4SignerAuth
+from .index import Index, IndexTemplate
+from .mapping import Mapping
+from .query import Q
+from .search import MultiSearch, Search
 from .serializer import JSONSerializer
 from .transport import Transport
+from .update_by_query import UpdateByQuery
+from .utils import AttrDict, AttrList, DslBase
+from .wrappers import Range
 
 # Only raise one warning per deprecation message so as not
 # to spam up the user if the same action is done multiple times.
@@ -97,6 +163,78 @@ __all__ = [
     "OpenSearchDeprecationWarning",
     "AWSV4SignerAuth",
     "AWSV4SignerAsyncAuth",
+    "A",
+    "AttrDict",
+    "AttrList",
+    "Binary",
+    "Boolean",
+    "Byte",
+    "Completion",
+    "CustomField",
+    "Date",
+    "DateHistogramFacet",
+    "DateRange",
+    "DenseVector",
+    "Document",
+    "Double",
+    "DoubleRange",
+    "DslBase",
+    "Facet",
+    "FacetedResponse",
+    "FacetedSearch",
+    "Field",
+    "Float",
+    "FloatRange",
+    "GeoPoint",
+    "GeoShape",
+    "HalfFloat",
+    "HistogramFacet",
+    "IllegalOperation",
+    "Index",
+    "IndexTemplate",
+    "InnerDoc",
+    "Integer",
+    "IntegerRange",
+    "Ip",
+    "IpRange",
+    "Join",
+    "Keyword",
+    "Long",
+    "LongRange",
+    "Mapping",
+    "MetaField",
+    "MultiSearch",
+    "Murmur3",
+    "Nested",
+    "NestedFacet",
+    "Object",
+    "OpenSearchDslException",
+    "Percolator",
+    "Q",
+    "Range",
+    "RangeFacet",
+    "RangeField",
+    "RankFeature",
+    "RankFeatures",
+    "SF",
+    "ScaledFloat",
+    "Search",
+    "SearchAsYouType",
+    "Short",
+    "SparseVector",
+    "TermsFacet",
+    "Text",
+    "TokenCount",
+    "UnknownDslObject",
+    "UpdateByQuery",
+    "ValidationException",
+    "analyzer",
+    "char_filter",
+    "connections",
+    "construct_field",
+    "normalizer",
+    "token_filter",
+    "tokenizer",
 ]
 
 try:
