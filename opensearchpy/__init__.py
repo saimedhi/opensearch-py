@@ -43,13 +43,14 @@ VERSION = __version__ = (_major, _minor, _patch)
 logger = logging.getLogger("opensearch")
 logger.addHandler(logging.NullHandler())
 
-from . import connections
-from .aggs import A
-from .analysis import analyzer, char_filter, normalizer, token_filter, tokenizer
 from .client import OpenSearch
-from .connection import Connection, RequestsHttpConnection, Urllib3HttpConnection
+from .connection import (
+    Connection,
+    RequestsHttpConnection,
+    Urllib3HttpConnection,
+    connections,
+)
 from .connection_pool import ConnectionPool, ConnectionSelector, RoundRobinSelector
-from .document import Document, InnerDoc, MetaField
 from .exceptions import (
     AuthenticationException,
     AuthorizationException,
@@ -70,7 +71,11 @@ from .exceptions import (
     UnknownDslObject,
     ValidationException,
 )
-from .faceted_search import (
+from .helpers import AWSV4SignerAsyncAuth, AWSV4SignerAuth
+from .helpers.aggs import A
+from .helpers.analysis import analyzer, char_filter, normalizer, token_filter, tokenizer
+from .helpers.document import Document, InnerDoc, MetaField
+from .helpers.faceted_search import (
     DateHistogramFacet,
     Facet,
     FacetedResponse,
@@ -80,7 +85,7 @@ from .faceted_search import (
     RangeFacet,
     TermsFacet,
 )
-from .field import (
+from .helpers.field import (
     Binary,
     Boolean,
     Byte,
@@ -120,17 +125,16 @@ from .field import (
     TokenCount,
     construct_field,
 )
-from .function import SF
-from .helpers import AWSV4SignerAsyncAuth, AWSV4SignerAuth
-from .index import Index, IndexTemplate
-from .mapping import Mapping
-from .query import Q
-from .search import MultiSearch, Search
+from .helpers.function import SF
+from .helpers.index import Index, IndexTemplate
+from .helpers.mapping import Mapping
+from .helpers.query import Q
+from .helpers.search import MultiSearch, Search
+from .helpers.update_by_query import UpdateByQuery
+from .helpers.utils import AttrDict, AttrList, DslBase
+from .helpers.wrappers import Range
 from .serializer import JSONSerializer
 from .transport import Transport
-from .update_by_query import UpdateByQuery
-from .utils import AttrDict, AttrList, DslBase
-from .wrappers import Range
 
 # Only raise one warning per deprecation message so as not
 # to spam up the user if the same action is done multiple times.

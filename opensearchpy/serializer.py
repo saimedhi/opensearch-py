@@ -36,7 +36,7 @@ from decimal import Decimal
 
 from .compat import string_types
 from .exceptions import ImproperlyConfigured, SerializationError
-from .utils import AttrList
+from .helpers.utils import AttrList
 
 INTEGER_TYPES = ()
 FLOAT_TYPES = (Decimal,)

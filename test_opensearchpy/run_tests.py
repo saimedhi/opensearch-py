@@ -117,14 +117,12 @@ def run_all(argv=None):
                 "test_opensearchpy/test_server/",
                 "test_opensearchpy/test_server_secured/",
                 "test_opensearchpy/test_async/test_server/",
-                "test_opensearchpy/test_dsl/test_integration/",
             ]
         )
 
         # Jenkins/Github actions, only run server tests
         if environ.get("TEST_TYPE") == "server":
             test_dir = abspath(dirname(__file__))
-            argv.append(join(test_dir, "test_dsl/test_integration/"))
             if secured:
                 argv.append(join(test_dir, "test_server_secured"))
                 ignores.extend(
