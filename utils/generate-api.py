@@ -354,15 +354,11 @@ def download_artifact(version):
     zip_url='https://staging.elastic.co/7.17.9-67e586b7/downloads/elasticsearch/rest-resources-zip-7.17.9.zip'
     # Download the .jar file and unzip only the API
     # .json files into a temporary directory
-    print("1")
     resp = http.request("GET", zip_url)
-    print("2")
 
     tmp = Path(tempfile.mkdtemp())
     zip = zipfile.ZipFile(io.BytesIO(resp.data))
     for name in zip.namelist():
-        print("3")
-        print(name)
         if not name.endswith(".json") or name == "schema.json":
             continue
         with (tmp / name.replace("rest-api-spec/api/", "")).open("wb") as f:
@@ -371,36 +367,6 @@ def download_artifact(version):
     yield tmp
     shutil.rmtree(tmp)
 
-
-# def read_modules(version):
-#     modules = {}
-
-#     with download_artifact(version) as path:
-#     #path = "C:/Users/charn/generate_api_code"
-#     for f in sorted(os.listdir(path)):
-#         name, ext = f.rsplit(".", 1)
-
-#         if ext != "json" or name == "_common":
-#             continue
-
-#         with open(path / f) as api_def:
-#             api = json.load(api_def)[name]
-
-#         namespace = "__init__"
-#         if "." in name:
-#             namespace, name = name.rsplit(".", 1)
-
-#         # The data_frame API has been changed to transform.
-#         if namespace == "data_frame_transform_deprecated":
-#             continue
-
-#         if namespace not in modules:
-#             modules[namespace] = Module(namespace)
-
-#         modules[namespace].add(API(namespace, name, api))
-#         modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
-
-#     return modules
 
 def read_modules(version):
     modules = {}
@@ -433,9 +399,7 @@ def read_modules(version):
 
 
 def dump_modules(modules):
-    print("dump")
     for mod in modules.values(): 
-        print(mod)
         mod.dump()
 
     # Unasync all the generated async code
