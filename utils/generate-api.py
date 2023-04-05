@@ -351,18 +351,24 @@ def download_artifact(version):
     #     raise RuntimeError(
     #         "Could not find the package 'rest-resources-zip-*.zip' in build"
     #     )
-    zip_url='https://staging.elastic.co/7.17.9-67e586b7/downloads/elasticsearch/rest-resources-zip-7.17.9.zip'
+    #zip_url='https://staging.elastic.co/7.17.9-67e586b7/downloads/elasticsearch/rest-resources-zip-7.17.9.zip'
     # Download the .jar file and unzip only the API
     # .json files into a temporary directory
-    resp = http.request("GET", zip_url)
+    #resp = http.request("GET", zip_url)
 
     tmp = Path(tempfile.mkdtemp())
-    zip = zipfile.ZipFile(io.BytesIO(resp.data))
-    for name in zip.namelist():
-        if not name.endswith(".json") or name == "schema.json":
-            continue
-        with (tmp / name.replace("rest-api-spec/api/", "")).open("wb") as f:
-            f.write(zip.read(name))
+    #zip = zipfile.ZipFile(io.BytesIO(resp.data))
+    file_name="rest-resources-zip-7.17.9.zip"
+    print("ABCD")
+    with zipfile.ZipFile(file_name, 'r') as zip:
+        for name in zip.namelist():
+            if not name.endswith(".json") or name == "schema.json":
+                continue
+            print("name")
+            print(name)
+            print("name")
+            with (tmp / name.replace("rest-api-spec/api/", "")).open("wb") as f:
+                f.write(zip.read(name))
 
     yield tmp
     shutil.rmtree(tmp)
