@@ -155,11 +155,15 @@ class API:
         self.namespace = namespace
         self.name = name
         self.is_pyi = is_pyi
-
         # overwrite the dict to maintain key order
+        print("----------------------------------------------------------------------------")
+        print("before def    ", definition)
+        print("----------------------------------------------------------------------------")
         definition["params"] = {
             SUBSTITUTIONS.get(p, p): v for p, v in definition.get("params", {}).items()
         }
+        print("after update def  ", definition)
+        print("----------------------------------------------------------------------------")
 
         self._def = definition
         self.description = ""
@@ -200,7 +204,8 @@ class API:
         parts = {}
         for url in self._def["url"]["paths"]:
             parts.update(url.get("parts", {}))
-
+        print(" all_parts.url            ",url)
+        print(" all_parts.parts            ",parts)
         for p in parts:
             parts[p]["required"] = all(
                 p in url.get("parts", {}) for url in self._def["url"]["paths"]
@@ -217,8 +222,10 @@ class API:
         for k, sub in SUBSTITUTIONS.items():
             if k in parts:
                 parts[sub] = parts.pop(k)
-
+        print(" all_parts.url_parts            ",self.url_parts)
         dynamic, components = self.url_parts
+        print("dynamic                  ", dynamic)
+        print("components               ", components)
 
         def ind(item):
             try:
@@ -232,6 +239,7 @@ class API:
     @property
     def params(self):
         parts = self.all_parts
+        print(" params.parts            ",parts)
         params = self._def.get("params", {})
         return chain(
             ((p, parts[p]) for p in parts if parts[p]["required"]),
@@ -337,32 +345,34 @@ class API:
 def download_artifact(version):
     # Download the list of all artifacts for a version
     # and find the latest build URL for 'rest-resources-zip-*.zip'
-    resp = http.request(
-        "GET", f"https://artifacts-api.elastic.co/v1/versions/{version}"
-    )
-    packages = json.loads(resp.data)["version"]["builds"][0]["projects"][
-        "opensearchpy"
-    ]["packages"]
-    for package in packages:
-        if re.match(r"^rest-resources-zip-.*\.zip$", package):
-            zip_url = packages[package]["url"]
-            break
-    else:
-        raise RuntimeError(
-            "Could not find the package 'rest-resources-zip-*.zip' in build"
-        )
-
+    # resp = http.request(
+    #     "GET", f"https://artifacts-api.elastic.co/v1/versions/{version}"
+    # )
+    # packages = json.loads(resp.data)["version"]["builds"][0]["projects"][
+    #     "opensearchpy"
+    # ]["packages"]
+    # for package in packages:
+    #     if re.match(r"^rest-resources-zip-.*\.zip$", package):
+    #         zip_url = packages[package]["url"]
+    #         break
+    # else:
+    #     raise RuntimeError(
+    #         "Could not find the package 'rest-resources-zip-*.zip' in build"
+    #     )
+    #zip_url='https://staging.elastic.co/7.17.9-67e586b7/downloads/elasticsearch/rest-resources-zip-7.17.9.zip'
     # Download the .jar file and unzip only the API
     # .json files into a temporary directory
-    resp = http.request("GET", zip_url)
+    #resp = http.request("GET", zip_url)
 
     tmp = Path(tempfile.mkdtemp())
-    zip = zipfile.ZipFile(io.BytesIO(resp.data))
-    for name in zip.namelist():
-        if not name.endswith(".json") or name == "schema.json":
-            continue
-        with (tmp / name.replace("rest-api-spec/api/", "")).open("wb") as f:
-            f.write(zip.read(name))
+    #zip = zipfile.ZipFile(io.BytesIO(resp.data))
+    file_name="rest-resources-zip-7.17.9.zip"
+    with zipfile.ZipFile(file_name, 'r') as zip:
+        for name in zip.namelist():
+            if not name.endswith(".json") or name == "schema.json":
+                continue
+            with (tmp / name.replace("rest-api-spec/api/", "")).open("wb") as f:
+                f.write(zip.read(name))
 
     yield tmp
     shutil.rmtree(tmp)
@@ -378,28 +388,37 @@ def read_modules(version):
             if ext != "json" or name == "_common":
                 continue
 
-            with open(path / f) as api_def:
-                api = json.load(api_def)[name]
+            if f=='cat.indices.json':
 
-            namespace = "__init__"
-            if "." in name:
-                namespace, name = name.rsplit(".", 1)
+                with open(path / f) as api_def:
+                    api = json.load(api_def)[name]
+                    print("api_def",api_def)
+                    print("name",name)
+                    #print("api",api)
+                    print("-----------------------------------------------------------------------------------------------------------------")
+                    print("----------------------------------------------------------------------------------------------------------------")
 
-            # The data_frame API has been changed to transform.
-            if namespace == "data_frame_transform_deprecated":
-                continue
+                namespace = "__init__"
+                if "." in name:
+                    namespace, name = name.rsplit(".", 1)
 
-            if namespace not in modules:
-                modules[namespace] = Module(namespace)
+                # The data_frame API has been changed to transform.
+                if namespace == "data_frame_transform_deprecated":
+                    continue
 
-            modules[namespace].add(API(namespace, name, api))
-            modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
+                if namespace not in modules:
+                    modules[namespace] = Module(namespace)
+
+                modules[namespace].add(API(namespace, name, api))
+                modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
+                break
+            
 
     return modules
 
 
 def dump_modules(modules):
-    for mod in modules.values():
+    for mod in modules.values(): 
         mod.dump()
 
     # Unasync all the generated async code
@@ -432,5 +451,6 @@ def dump_modules(modules):
 
 
 if __name__ == "__main__":
-    version = sys.argv[1]
+    #version = sys.argv[1]
+    version='7.17.9'
     dump_modules(read_modules(version))
