@@ -388,30 +388,31 @@ def read_modules(version):
             if ext != "json" or name == "_common":
                 continue
 
-            if f=='cat.indices.json':
+            
 
-                with open(path / f) as api_def:
-                    api = json.load(api_def)[name]
-                    print("api_def",api_def)
-                    print("name",name)
-                    #print("api",api)
-                    print("-----------------------------------------------------------------------------------------------------------------")
-                    print("----------------------------------------------------------------------------------------------------------------")
+            with open(path / f) as api_def:
+                api = json.load(api_def)[name]
+                print("api_def",api_def)
+                print("name",name)
+                #print("api",api)
+                print("-----------------------------------------------------------------------------------------------------------------")
+                print("----------------------------------------------------------------------------------------------------------------")
 
-                namespace = "__init__"
-                if "." in name:
-                    namespace, name = name.rsplit(".", 1)
+            namespace = "__init__"
+            if "." in name:
+                namespace, name = name.rsplit(".", 1)
 
-                # The data_frame API has been changed to transform.
-                if namespace == "data_frame_transform_deprecated":
-                    continue
+            # The data_frame API has been changed to transform.
+            if namespace == "data_frame_transform_deprecated":
+                continue
 
-                if namespace not in modules:
-                    modules[namespace] = Module(namespace)
+            
+            if namespace not in modules:
+                modules[namespace] = Module(namespace)
 
-                modules[namespace].add(API(namespace, name, api))
-                modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
-                break
+            modules[namespace].add(API(namespace, name, api))
+            modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
+            
             
 
     return modules
