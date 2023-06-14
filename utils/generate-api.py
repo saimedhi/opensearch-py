@@ -359,14 +359,10 @@ def download_artifact(version):
     tmp = Path(tempfile.mkdtemp())
     #zip = zipfile.ZipFile(io.BytesIO(resp.data))
     file_name="rest-resources-zip-7.17.9.zip"
-    print("ABCD")
     with zipfile.ZipFile(file_name, 'r') as zip:
         for name in zip.namelist():
             if not name.endswith(".json") or name == "schema.json":
                 continue
-            print("name")
-            print(name)
-            print("name")
             with (tmp / name.replace("rest-api-spec/api/", "")).open("wb") as f:
                 f.write(zip.read(name))
 
@@ -394,7 +390,10 @@ def read_modules(version):
             # The data_frame API has been changed to transform.
             if namespace == "data_frame_transform_deprecated":
                 continue
-
+            if namespace=="__init__" and name=="create":
+                print("name             ", name)
+                print("namespace             ", namespace)
+                print("api              ", api)
             if namespace not in modules:
                 modules[namespace] = Module(namespace)
 
