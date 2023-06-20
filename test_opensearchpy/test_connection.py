@@ -1044,7 +1044,10 @@ class TestRequestsConnectionRedirect:
         conn = RequestsHttpConnection("localhost", port=8080, use_ssl=False, timeout=60)
         with pytest.raises(TransportError) as e:
             conn.perform_request("GET", "/redirect", allow_redirects=False)
+        print("e_printed            ", e)
         assert e.value.status_code == 302
+        assert 1==2
+        
 
     # allow_redirects = True (Default)
     def test_redirect_success_when_allow_redirect_true(self):
