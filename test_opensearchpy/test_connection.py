@@ -1045,6 +1045,10 @@ class TestRequestsConnectionRedirect:
         with pytest.raises(TransportError) as e:
             conn.perform_request("GET", "/redirect", allow_redirects=False)
         assert e.value.status_code == 302
+        print("e printed", e)
+        print("e.value printed", e.value)
+        assert 1==2
+        
 
     # allow_redirects = True (Default)
     def test_redirect_success_when_allow_redirect_true(self):
