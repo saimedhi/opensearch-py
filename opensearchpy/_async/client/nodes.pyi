@@ -24,6 +24,15 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
+# ----------------------------------------------------
+# THIS CODE IS GENERATED. MANUAL EDITS WILL BE LOST.
+
+# To contribute, please make necessary modifications to either "Python generator":
+# https://github.com/opensearch-project/opensearch-py/blob/main/utils/generate-api.py
+# or "OpenAPI specs":
+# https://github.com/opensearch-project/opensearch-api-specification/blob/main/OpenSearch.openapi.json
+# -----------------------------------------------------
+
 from typing import Any, Collection, MutableMapping, Optional, Tuple, Union
 
 from .utils import NamespacedClient
@@ -79,7 +88,6 @@ class NodesClient(NamespacedClient):
         fields: Optional[Any] = ...,
         groups: Optional[Any] = ...,
         include_segment_file_sizes: Optional[Any] = ...,
-        include_unloaded_segments: Optional[Any] = ...,
         level: Optional[Any] = ...,
         timeout: Optional[Any] = ...,
         types: Optional[Any] = ...,
@@ -100,7 +108,6 @@ class NodesClient(NamespacedClient):
         self,
         *,
         node_id: Optional[Any] = ...,
-        doc_type: Optional[Any] = ...,
         ignore_idle_threads: Optional[Any] = ...,
         interval: Optional[Any] = ...,
         snapshots: Optional[Any] = ...,

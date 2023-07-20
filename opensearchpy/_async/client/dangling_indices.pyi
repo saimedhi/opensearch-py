@@ -24,6 +24,15 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
+# ----------------------------------------------------
+# THIS CODE IS GENERATED. MANUAL EDITS WILL BE LOST.
+
+# To contribute, please make necessary modifications to either "Python generator":
+# https://github.com/opensearch-project/opensearch-py/blob/main/utils/generate-api.py
+# or "OpenAPI specs":
+# https://github.com/opensearch-project/opensearch-api-specification/blob/main/OpenSearch.openapi.json
+# -----------------------------------------------------
+
 from typing import Any, Collection, MutableMapping, Optional, Tuple, Union
 
 from .utils import NamespacedClient
@@ -34,8 +43,8 @@ class DanglingIndicesClient(NamespacedClient):
         index_uuid: Any,
         *,
         accept_data_loss: Optional[Any] = ...,
-        master_timeout: Optional[Any] = ...,
         cluster_manager_timeout: Optional[Any] = ...,
+        master_timeout: Optional[Any] = ...,
         timeout: Optional[Any] = ...,
         pretty: Optional[bool] = ...,
         human: Optional[bool] = ...,
@@ -55,8 +64,8 @@ class DanglingIndicesClient(NamespacedClient):
         index_uuid: Any,
         *,
         accept_data_loss: Optional[Any] = ...,
-        master_timeout: Optional[Any] = ...,
         cluster_manager_timeout: Optional[Any] = ...,
+        master_timeout: Optional[Any] = ...,
         timeout: Optional[Any] = ...,
         pretty: Optional[bool] = ...,
         human: Optional[bool] = ...,
