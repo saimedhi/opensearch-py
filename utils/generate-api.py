@@ -31,6 +31,7 @@ from functools import lru_cache
 from itertools import chain, groupby
 from operator import itemgetter
 from pathlib import Path
+import sys
 
 import black
 import requests
@@ -424,7 +425,8 @@ class API:
         )
 
 
-def read_modules():
+def read_modules(apis_to_gen):
+    print("read_module_apis_to_gen",apis_to_gen)
     modules = {}
 
     # Load the OpenAPI specification file
@@ -514,7 +516,6 @@ def read_modules():
     # Group the input list by the value of the "x-operation-group" key
     for key, value in groupby(list_of_dicts, key=itemgetter("x-operation-group")):
         api = {}
-
         # Extract the namespace and name from the 'x-operation-group'
         if "." in key:
             namespace, name = key.rsplit(".", 1)
@@ -604,13 +605,27 @@ def read_modules():
 
         api.update({"url": {"paths": paths}})
 
-        if namespace not in modules:
-            modules[namespace] = Module(namespace)
-
-        modules[namespace].add(API(namespace, name, api))
-        modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
-
-    return modules
+        if len(apis_to_gen)==0:
+            if namespace not in modules:
+                modules[namespace] = Module(namespace)
+            modules[namespace].add(API(namespace, name, api))
+            modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
+            return modules
+        else:
+            for x in apis_to_gen:
+                if "." in x:
+                    namespace_1, name_1 = x.rsplit(".", 1)
+                else:
+                    namespace_1 = "__init__"
+                    name_1 = x
+                if namespace_1==namespace and name_1==name:
+                    if namespace not in modules:
+                        modules[namespace] = Module(namespace)
+                    modules[namespace].add(API(namespace, name, api))
+                    modules[namespace].pyi.add(API(namespace, name, api, is_pyi=True))
+                    print(modules)
+                    print(type(modules))
+                    return modules
 
 
 def dump_modules(modules):
@@ -647,4 +662,12 @@ def dump_modules(modules):
 
 
 if __name__ == "__main__":
-    dump_modules(read_modules())
+    #dump_modules(read_modules())
+    print("printed sys.argv", str(sys.argv))
+    print("printed sys.argv", len(sys.argv))
+    apis_to_gen=[]
+    if len(sys.argv)>1:
+        apis_to_gen=list(sys.argv[1:])
+        print(apis_to_gen)
+    dump_modules(read_modules(apis_to_gen))
+    # read_modules(apis_to_gen)
