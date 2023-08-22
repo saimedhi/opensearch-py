@@ -7,7 +7,7 @@
 # Modifications Copyright OpenSearch Contributors. See
 # GitHub history for details.
 
-from ..client.utils import SKIP_IN_PATH, NamespacedClient, _make_path, query_params
+from .utils import SKIP_IN_PATH, NamespacedClient, _make_path, query_params
 
 
 class SecurityClient(NamespacedClient):

@@ -6,9 +6,9 @@
 #
 # Modifications Copyright OpenSearch Contributors. See
 # GitHub history for details.
-from typing import Any, Union
+from typing import Any, Collection, MutableMapping, Optional, Tuple, Union
 
-from ..client.utils import NamespacedClient as NamespacedClient
+from .utils import NamespacedClient as NamespacedClient
 
 class SecurityClient(NamespacedClient):
     def get_account_details(
