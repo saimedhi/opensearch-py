@@ -339,7 +339,72 @@ class OpenSearch(Client):
             "PUT", path, params=params, headers=headers, body=body
         )
 
-    
+    @query_params(
+        "if_primary_term",
+        "if_seq_no",
+        "op_type",
+        "pipeline",
+        "refresh",
+        "require_alias",
+        "routing",
+        "timeout",
+        "version",
+        "version_type",
+        "wait_for_active_shards",
+    )
+    def index(
+        self,
+        index: Any,
+        body: Any,
+        id: Any = None,
+        params: Any = None,
+        headers: Any = None,
+    ) -> Any:
+        """
+        Creates or updates a document in an index.
+
+
+        :arg index: Index name.
+        :arg body: The document
+        :arg id: Document ID.
+        :arg if_primary_term: only perform the operation if the last
+            operation that has changed the document has the specified primary term.
+        :arg if_seq_no: only perform the operation if the last operation
+            that has changed the document has the specified sequence number.
+        :arg op_type: Explicit operation type. Defaults to `index` for
+            requests with an explicit document ID, and to `create` for requests
+            without an explicit document ID. Valid choices are index, create.
+        :arg pipeline: The pipeline id to preprocess incoming documents
+            with.
+        :arg refresh: If `true` then refresh the affected shards to make
+            this operation visible to search, if `wait_for` then wait for a refresh
+            to make this operation visible to search, if `false` (the default) then
+            do nothing with refreshes. Valid choices are true, false, wait_for.
+        :arg require_alias: When true, requires destination to be an
+            alias. Default is false.
+        :arg routing: Routing value.
+        :arg timeout: Operation timeout.
+        :arg version: Explicit version number for concurrency control.
+        :arg version_type: Specific version type. Valid choices are
+            internal, external, external_gte, force.
+        :arg wait_for_active_shards: Sets the number of shard copies
+            that must be active before proceeding with the operation. Defaults to 1,
+            meaning the primary shard only. Set to `all` for all shard copies,
+            otherwise set to any non-negative value less than or equal to the total
+            number of copies for the shard (number of replicas + 1). Default is 1.
+        """
+        for param in (index, body):
+            if param in SKIP_IN_PATH:
+                raise ValueError("Empty value passed for a required argument.")
+
+        return self.transport.perform_request(
+            "POST" if id in SKIP_IN_PATH else "PUT",
+            _make_path(index, "_doc", id),
+            params=params,
+            headers=headers,
+            body=body,
+        )
+
     @query_params(
         "_source",
         "_source_excludes",
@@ -425,74 +490,6 @@ class OpenSearch(Client):
 
         return self.transport.perform_request(
             "DELETE", "/_search/scroll", params=params, headers=headers, body=body
-        )
-
-    @query_params(
-        "allow_no_indices",
-        "analyze_wildcard",
-        "analyzer",
-        "default_operator",
-        "df",
-        "expand_wildcards",
-        "ignore_throttled",
-        "ignore_unavailable",
-        "lenient",
-        "min_score",
-        "preference",
-        "q",
-        "routing",
-        "terminate_after",
-    )
-    def count(
-        self,
-        body: Any = None,
-        index: Any = None,
-        params: Any = None,
-        headers: Any = None,
-    ) -> Any:
-        """
-        Returns number of documents matching a query.
-
-
-        :arg body: Query to restrict the results specified with the
-            Query DSL (optional)
-        :arg index: Comma-separated list of indices to restrict the
-            results.
-        :arg allow_no_indices: Whether to ignore if a wildcard indices
-            expression resolves into no concrete indices. (This includes `_all`
-            string or when no indices have been specified).
-        :arg analyze_wildcard: Specify whether wildcard and prefix
-            queries should be analyzed. Default is false.
-        :arg analyzer: The analyzer to use for the query string.
-        :arg default_operator: The default operator for query string
-            query (AND or OR). Valid choices are AND, OR.
-        :arg df: The field to use as default where no field prefix is
-            given in the query string.
-        :arg expand_wildcards: Whether to expand wildcard expression to
-            concrete indices that are open, closed or both. Valid choices are all,
-            open, closed, hidden, none.
-        :arg ignore_throttled: Whether specified concrete, expanded or
-            aliased indices should be ignored when throttled.
-        :arg ignore_unavailable: Whether specified concrete indices
-            should be ignored when unavailable (missing or closed).
-        :arg lenient: Specify whether format-based query failures (such
-            as providing text to a numeric field) should be ignored.
-        :arg min_score: Include only documents with a specific `_score`
-            value in the result.
-        :arg preference: Specify the node or shard the operation should
-            be performed on. Default is random.
-        :arg q: Query in the Lucene query string syntax.
-        :arg routing: Comma-separated list of specific routing values.
-        :arg terminate_after: The maximum number of documents to collect
-            for each shard, upon reaching which the query execution will terminate
-            early.
-        """
-        return self.transport.perform_request(
-            "POST",
-            _make_path(index, "_count"),
-            params=params,
-            headers=headers,
-            body=body,
         )
 
     @query_params(
@@ -2195,4 +2192,72 @@ class OpenSearch(Client):
         """
         return self.transport.perform_request(
             "GET", "/_search/point_in_time/_all", params=params, headers=headers
+        )
+
+    @query_params(
+        "allow_no_indices",
+        "analyze_wildcard",
+        "analyzer",
+        "default_operator",
+        "df",
+        "expand_wildcards",
+        "ignore_throttled",
+        "ignore_unavailable",
+        "lenient",
+        "min_score",
+        "preference",
+        "q",
+        "routing",
+        "terminate_after",
+    )
+    def count(
+        self,
+        body: Any = None,
+        index: Any = None,
+        params: Any = None,
+        headers: Any = None,
+    ) -> Any:
+        """
+        Returns number of documents matching a query.
+
+
+        :arg body: Query to restrict the results specified with the
+            Query DSL (optional)
+        :arg index: Comma-separated list of indices to restrict the
+            results.
+        :arg allow_no_indices: Whether to ignore if a wildcard indices
+            expression resolves into no concrete indices. (This includes `_all`
+            string or when no indices have been specified).
+        :arg analyze_wildcard: Specify whether wildcard and prefix
+            queries should be analyzed. Default is false.
+        :arg analyzer: The analyzer to use for the query string.
+        :arg default_operator: The default operator for query string
+            query (AND or OR). Valid choices are AND, OR.
+        :arg df: The field to use as default where no field prefix is
+            given in the query string.
+        :arg expand_wildcards: Whether to expand wildcard expression to
+            concrete indices that are open, closed or both. Valid choices are all,
+            open, closed, hidden, none.
+        :arg ignore_throttled: Whether specified concrete, expanded or
+            aliased indices should be ignored when throttled.
+        :arg ignore_unavailable: Whether specified concrete indices
+            should be ignored when unavailable (missing or closed).
+        :arg lenient: Specify whether format-based query failures (such
+            as providing text to a numeric field) should be ignored.
+        :arg min_score: Include only documents with a specific `_score`
+            value in the result.
+        :arg preference: Specify the node or shard the operation should
+            be performed on. Default is random.
+        :arg q: Query in the Lucene query string syntax.
+        :arg routing: Comma-separated list of specific routing values.
+        :arg terminate_after: The maximum number of documents to collect
+            for each shard, upon reaching which the query execution will terminate
+            early.
+        """
+        return self.transport.perform_request(
+            "POST",
+            _make_path(index, "_count"),
+            params=params,
+            headers=headers,
+            body=body,
         )
