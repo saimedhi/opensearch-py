@@ -52,8 +52,8 @@ jobs:
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         with:
           include: CHANGELOG.md
-          find: "\\* Your contribution here."
-          replace: "* [#${{steps.cpr.outputs.pull-request-number}}](https://github.com/saimedhi/opensearch-py/pulls/${{steps.cpr.outputs.pull-request-number}}): Update API from [opensearch-py@]() - [@automated-api-update-bot](https://github.com/apps/opensearch-py-update-api-app).\n* Your contribution here."
+          find: "\\- Your contribution here."
+          replace: "* [#${{steps.cpr.outputs.pull-request-number}}](https://github.com/saimedhi/opensearch-py/pulls/${{steps.cpr.outputs.pull-request-number}}): Update API from [opensearch-py@]() - [@automated-api-update-bot](https://github.com/apps/opensearch-py-update-api-app).\n- Your contribution here."
       - name: Commit and Push
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         run: |
