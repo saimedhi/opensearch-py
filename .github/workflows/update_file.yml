@@ -1,5 +1,5 @@
 name: Update OpenSearch API 
-on: [push, pull_request]
+on: [push]
 jobs:
   update-api:
     if: ${{ github.repository == 'saimedhi/opensearch-py' }}
