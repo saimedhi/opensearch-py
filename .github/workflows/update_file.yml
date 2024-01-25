@@ -63,7 +63,7 @@ jobs:
           AUTH=$(echo -n "x-access-token:${{ steps.github_app_token.outputs.token || secrets.GITHUB_TOKEN }}" | base64)
           echo "::add-mask::${AUTH}"
           git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${AUTH}"
-          git add CHANGELOG.md
+          git add .
           git commit --amend --no-edit
           git push origin automated-api-update -f
           
