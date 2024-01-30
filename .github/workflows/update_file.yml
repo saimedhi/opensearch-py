@@ -50,7 +50,7 @@ jobs:
       - name: printed
         run: |
           echo "Checking find pattern in CHANGELOG.md..."
-          grep -n "- Your contribution here." CHANGELOG.md || echo "Pattern not found."
+          grep -n "here" CHANGELOG.md || echo "Pattern not found."
       - name: Update CHANGELOG
         uses: jacobtomlinson/gha-find-replace@v3
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
