@@ -58,6 +58,8 @@ jobs:
           find: "Your contribution here."
           replace: "12345678910"
           include: "**CHANGELOG.md"
+      - name: Append to file
+        run: echo "This is a new line" >> CHANGELOG.md
       - name: List modified files
         run: |
           # Get the list of modified files
