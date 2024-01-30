@@ -51,6 +51,7 @@ jobs:
         run: |
           echo "Checking find pattern in CHANGELOG.md..."
           grep -n "Your contribution here." CHANGELOG.md || echo "Pattern not found."
+      - uses: actions/checkout@v4
       - name: Update CHANGELOG
         uses: jacobtomlinson/gha-find-replace@v3
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
