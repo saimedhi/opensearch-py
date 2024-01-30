@@ -89,4 +89,11 @@ jobs:
           # Print the list of modified files
           echo "Modified files2:"
           echo "$modified_files"
+      - name: List modified files for automated-api-update branch
+        run: |
+          branch_commit=$(git rev-parse automated-api-update)
+          modified_files=$(git diff --name-only $branch_commit ${{ github.sha }})
+          echo "Modified files for branch automated-api-update:"
+          echo "$modified_files"
+        
           
