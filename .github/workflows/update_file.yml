@@ -78,7 +78,9 @@ jobs:
           git add CHANGELOG.md
           git commit --amend --no-edit
           PUSH_OUTPUT=$(git push origin automated-api-update -f 2>&1)
+          echo "PUSHED_OUTPUT:"
           echo "$PUSH_OUTPUT"
+          echo "PUSHED_OUTPUT END"
       - name: List modified files2
         run: |
           # Get the list of modified files
