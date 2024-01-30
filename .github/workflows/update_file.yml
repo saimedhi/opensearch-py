@@ -48,7 +48,7 @@ jobs:
           committer: opensearchpy-api-update-bot <noreply@github.com>
           author: opensearchpy-api-update-bot <noreply@github.com>
       - name: read file
-        run: python read_md.py
+        run: python abcd.py
       - name: Update CHANGELOG
         uses: jacobtomlinson/gha-find-replace@v3
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
