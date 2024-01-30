@@ -66,12 +66,18 @@ jobs:
           # Print the list of modified files
           echo "Modified files:"
           echo "$modified_files"
-      - name: Push changes
+      - name: Commit and Push
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: automated-api-update
+        run: |
+          git config --local user.name 'opensearchpy-api-update-bot'
+          git config --local user.email 'noreply@github.com'
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          AUTH=$(echo -n "x-access-token:${{ steps.github_app_token.outputs.token || secrets.GITHUB_TOKEN }}" | base64)
+          echo "::add-mask::${AUTH}"
+          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${AUTH}"
+          git add CHANGELOG.md
+          git commit --amend --no-edit
+          git push origin automated-api-update -f
       - name: List modified files2
         run: |
           # Get the list of modified files
