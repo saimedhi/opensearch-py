@@ -517,6 +517,8 @@ class AsyncOpenSearch(Client):
     ) -> Any:
         """
         Returns number of documents matching a query.
+
+
         :arg body: Query to restrict the results specified with the
             Query DSL (optional)
         :arg index: Comma-separated list of indices to restrict the
