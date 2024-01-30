@@ -52,7 +52,7 @@ jobs:
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         with:
           include: CHANGELOG.md
-          find: "- Your contribution here."
+          find: "here"
           replace: "- Updated opensearch-py to reflect the latest OpenSearch API spec ([#${{steps.cpr.outputs.pull-request-number}}](https://github.com/saimedhi/opensearch-py/pull/${{steps.cpr.outputs.pull-request-number}}))\n- Your contribution here."
       - name: Commit and Push
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
