@@ -55,11 +55,10 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v3
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         with:
+          branch: automated-api-update
           find: "Your contribution here."
           replace: "12345678910"
           include: "**CHANGELOG.md"
-      - name: Append to file
-        run: echo "This is a new line" >> CHANGELOG.md
       - name: List modified files
         run: |
           # Get the list of modified files
@@ -77,7 +76,7 @@ jobs:
           AUTH=$(echo -n "x-access-token:${{ steps.github_app_token.outputs.token || secrets.GITHUB_TOKEN }}" | base64)
           echo "::add-mask::${AUTH}"
           git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${AUTH}"
-          git add CHANGELOG.md
+          git add .
           git commit --amend --no-edit
           PUSH_OUTPUT=$(git push origin automated-api-update -f 2>&1)
           echo "PUSHED_OUTPUT:"
