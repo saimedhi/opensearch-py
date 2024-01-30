@@ -147,3 +147,4 @@ def generate(session: Any) -> None:
     session.install("-rdev-requirements.txt")
     session.run("python", "utils/generate_api.py")
     session.notify("format")
+
