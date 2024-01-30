@@ -76,9 +76,11 @@ jobs:
           AUTH=$(echo -n "x-access-token:${{ steps.github_app_token.outputs.token || secrets.GITHUB_TOKEN }}" | base64)
           echo "::add-mask::${AUTH}"
           git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${AUTH}"
-          git add .
+          add_output=$(git add .)
+          echo "Git Add Output: $add_output"
           cat CHANGELOG.md
-          git commit --amend --no-edit
+          commit_output=$(git commit --amend --no-edit)
+          echo "Git Commit Output: $commit_output"
           PUSH_OUTPUT=$(git push origin automated-api-update -f 2>&1)
           echo "PUSHED_OUTPUT:"
           echo "$PUSH_OUTPUT"
