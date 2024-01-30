@@ -61,10 +61,7 @@ jobs:
           include: "**CHANGELOG.md"
       - name: List modified files
         run: |
-          # Get the list of modified files
           modified_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          
-          # Print the list of modified files
           echo "Modified files:"
           echo "$modified_files"
       - name: Commit and Push
@@ -87,10 +84,7 @@ jobs:
           echo "PUSHED_OUTPUT END"
       - name: List modified files2
         run: |
-          # Get the list of modified files
           modified_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          
-          # Print the list of modified files
           echo "Modified files2:"
           echo "$modified_files"
       - name: List modified files for automated-api-update branch
@@ -99,4 +93,3 @@ jobs:
           modified_files=$(git diff --name-only $branch_commit ${{ github.sha }})
           echo "Modified files for branch automated-api-update:"
           echo "$modified_files"
-        
