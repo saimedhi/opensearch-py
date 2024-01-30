@@ -58,6 +58,14 @@ jobs:
           find: "Your contribution here."
           replace: "Updated opensearch-py to reflect the latest OpenSearch API spec ([#${{steps.cpr.outputs.pull-request-number}}](https://github.com/saimedhi/opensearch-py/pull/${{steps.cpr.outputs.pull-request-number}}))\nYour contribution here."
           include: "**CHANGELOG.md"
+      - name: List modified files
+        run: |
+          # Get the list of modified files
+          modified_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          
+          # Print the list of modified files
+          echo "Modified files:"
+          echo "$modified_files"
       - name: Commit and Push
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         run: |
