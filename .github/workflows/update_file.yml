@@ -100,4 +100,3 @@ jobs:
           echo "Modified files for branch automated-api-update:"
           echo "$modified_files"
         
-          
