@@ -78,4 +78,12 @@ jobs:
           git add CHANGELOG.md
           git commit --amend --no-edit
           git push origin automated-api-update -f
+      - name: List modified files2
+        run: |
+          # Get the list of modified files
+          modified_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          
+          # Print the list of modified files
+          echo "Modified files2:"
+          echo "$modified_files"
           
