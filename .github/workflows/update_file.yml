@@ -79,7 +79,7 @@ jobs:
           add_output=$(git add .)
           echo "Git Add Output: $add_output"
           cat CHANGELOG.md
-          commit_output=$(git commit --amend --no-edit)
+          commit_output=$(git commit -s -m "updated abcd")
           echo "Git Commit Output: $commit_output"
           PUSH_OUTPUT=$(git push origin automated-api-update -f 2>&1)
           echo "PUSHED_OUTPUT:"
