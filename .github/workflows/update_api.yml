@@ -1,8 +1,8 @@
-name: Update OpenSearch API 
+name: Update API 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "40 3 * * *"
+    - cron: "30 6 * * *"
 jobs:
   update-api:
     if: ${{ github.repository == 'saimedhi/opensearch-py' }}
@@ -59,7 +59,6 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v3
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         with:
-          branch: automated-api-update
           find: "- Your contribution here."
           replace: "- Updated opensearch-py to reflect the latest OpenSearch API spec ([#${{steps.cpr.outputs.pull-request-number}}](https://github.com/saimedhi/opensearch-py/pull/${{steps.cpr.outputs.pull-request-number}}))\n- Your contribution here."
           include: "**CHANGELOG.md"
