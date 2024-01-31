@@ -12,6 +12,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 - Updated the `get_policy` API in the index_management plugin to allow the policy_id argument as optional ([#633](https://github.com/opensearch-project/opensearch-py/pull/633))
 ### Automated API Update
+- Updated opensearch-py to reflect the latest OpenSearch API spec ([#24](https://github.com/saimedhi/opensearch-py/pull/24))
 - Your contribution here.
 ### Deprecated
 ### Removed
