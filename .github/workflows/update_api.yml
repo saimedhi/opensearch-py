@@ -2,7 +2,7 @@ name: Update API
 on:
   workflow_dispatch:
   schedule:
-    - cron: "37 6 * * *"
+    - cron: "55 6 * * *"
 jobs:
   update-api:
     if: ${{ github.repository == 'saimedhi/opensearch-py' }}
