@@ -74,7 +74,7 @@ def format(session: Any) -> None:
     session.run("black", *SOURCE_FILES)
     session.run("python", "utils/license_headers.py", "fix", *SOURCE_FILES)
 
-    session.notify("lint")
+    # session.notify("lint")
 
 
 @nox.session(python=["3.7"])  # type: ignore
