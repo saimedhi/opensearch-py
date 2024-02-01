@@ -47,8 +47,9 @@ jobs:
             Date: ${{ steps.date.outputs.date }}
           branch: automated-api-update
           base: main
-          committer: opensearchpy-api-update-bot <noreply@github.com>
-          author: opensearchpy-api-update-bot <noreply@github.com>
+          signoff: true
+          labels: |
+              autocut
       - name: Check out update branch
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         run: |
