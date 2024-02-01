@@ -22,6 +22,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fix KeyError when scroll return no hits ([#616](https://github.com/opensearch-project/opensearch-py/pull/616))
 - Fix reuse of `OpenSearch` using `Urllib3HttpConnection` and `AsyncOpenSearch` after calling `close` ([#639](https://github.com/opensearch-project/opensearch-py/pull/639))
 ### Automated API Update
+- Updated opensearch-py to reflect the latest OpenSearch API spec ([#27](https://github.com/saimedhi/opensearch-py/pull/27))
 - Your contribution here.
 ### Security
 ### Dependencies
