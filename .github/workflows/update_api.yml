@@ -65,6 +65,5 @@ jobs:
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update changelog"
           branch: automated-api-update
-          commit_options: '--signoff'
+          commit_options: '--amend --no-edit --signoff'
