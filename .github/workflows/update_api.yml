@@ -39,7 +39,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.github_app_token.outputs.token }}
           commit-message: Updated opensearch-py to reflect the latest OpenSearch API spec (${{ steps.date.outputs.date }})
           title: Updated opensearch-py to reflect the latest OpenSearch API spec
           body: |
