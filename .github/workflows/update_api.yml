@@ -68,5 +68,3 @@ jobs:
           commit_message: "Update changelog"
           branch: automated-api-update
           commit_options: '--signoff'
-
-      
