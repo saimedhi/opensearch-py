@@ -67,8 +67,6 @@ jobs:
         with:
           commit_message: "Update changelog"
           branch: automated-api-update
-          commit_user_name: opensearchpy-api-update-bot
-          commit_user_email: noreply@github.com
           commit_options: '--signoff'
 
       
