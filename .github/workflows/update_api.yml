@@ -32,6 +32,11 @@ jobs:
           find: "### Updated APIs"
           replace: "### Updated APIs\n- Updated opensearch-py to reflect the latest OpenSearch API spec."
           include: "**CHANGELOG.md"
+      - name: Update CHANGELOG
+        run: |
+          start_line=$(grep -n '## \[Unreleased\]' CHANGELOG.md | cut -d: -f1)
+          end_line=$(awk '/^## \[/ {print NR; exit}' CHANGELOG.md || wc -l < CHANGELOG.md)
+          sed -i "${start_line},${end_line}s/### Updated APIs/### Updated APIs\n- Updated opensearch-py to reflect the latest OpenSearch API spec./" CHANGELOG.md
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
