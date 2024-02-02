@@ -423,72 +423,6 @@
             <span class="s2">&quot;PUT&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="OpenSearch.index"><a class="viewcode-back" href="../../api-ref/clients/opensearch_client.html#opensearchpy.OpenSearch.index">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span>
-        <span class="s2">&quot;if_primary_term&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;if_seq_no&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;op_type&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pipeline&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;refresh&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;require_alias&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;routing&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;timeout&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;version_type&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;wait_for_active_shards&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">index</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-        <span class="n">body</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-        <span class="nb">id</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">headers</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates or updates a document in an index.</span>
-
-
-<span class="sd">        :arg index: Index name.</span>
-<span class="sd">        :arg body: The document</span>
-<span class="sd">        :arg id: Document ID.</span>
-<span class="sd">        :arg if_primary_term: only perform the operation if the last</span>
-<span class="sd">            operation that has changed the document has the specified primary term.</span>
-<span class="sd">        :arg if_seq_no: only perform the operation if the last operation</span>
-<span class="sd">            that has changed the document has the specified sequence number.</span>
-<span class="sd">        :arg op_type: Explicit operation type. Defaults to `index` for</span>
-<span class="sd">            requests with an explicit document ID, and to `create` for requests</span>
-<span class="sd">            without an explicit document ID. Valid choices are index, create.</span>
-<span class="sd">        :arg pipeline: The pipeline id to preprocess incoming documents</span>
-<span class="sd">            with.</span>
-<span class="sd">        :arg refresh: If `true` then refresh the affected shards to make</span>
-<span class="sd">            this operation visible to search, if `wait_for` then wait for a refresh</span>
-<span class="sd">            to make this operation visible to search, if `false` (the default) then</span>
-<span class="sd">            do nothing with refreshes. Valid choices are true, false, wait_for.</span>
-<span class="sd">        :arg require_alias: When true, requires destination to be an</span>
-<span class="sd">            alias. Default is false.</span>
-<span class="sd">        :arg routing: Routing value.</span>
-<span class="sd">        :arg timeout: Operation timeout.</span>
-<span class="sd">        :arg version: Explicit version number for concurrency control.</span>
-<span class="sd">        :arg version_type: Specific version type. Valid choices are</span>
-<span class="sd">            internal, external, external_gte, force.</span>
-<span class="sd">        :arg wait_for_active_shards: Sets the number of shard copies</span>
-<span class="sd">            that must be active before proceeding with the operation. Defaults to 1,</span>
-<span class="sd">            meaning the primary shard only. Set to `all` for all shard copies,</span>
-<span class="sd">            otherwise set to any non-negative value less than or equal to the total</span>
-<span class="sd">            number of copies for the shard (number of replicas + 1). Default is 1.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">SKIP_IN_PATH</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Empty value passed for a required argument.&quot;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">perform_request</span><span class="p">(</span>
-            <span class="s2">&quot;POST&quot;</span> <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">SKIP_IN_PATH</span> <span class="k">else</span> <span class="s2">&quot;PUT&quot;</span><span class="p">,</span>
-            <span class="n">_make_path</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">),</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-            <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="OpenSearch.bulk"><a class="viewcode-back" href="../../api-ref/clients/opensearch_client.html#opensearchpy.OpenSearch.bulk">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span>
         <span class="s2">&quot;_source&quot;</span><span class="p">,</span>
         <span class="s2">&quot;_source_excludes&quot;</span><span class="p">,</span>
@@ -1694,6 +1628,7 @@
         <span class="s2">&quot;rest_total_hits_as_int&quot;</span><span class="p">,</span>
         <span class="s2">&quot;routing&quot;</span><span class="p">,</span>
         <span class="s2">&quot;scroll&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;search_pipeline&quot;</span><span class="p">,</span>
         <span class="s2">&quot;search_type&quot;</span><span class="p">,</span>
         <span class="s2">&quot;seq_no_primary_term&quot;</span><span class="p">,</span>
         <span class="s2">&quot;size&quot;</span><span class="p">,</span>
@@ -1788,6 +1723,8 @@
 <span class="sd">        :arg routing: Comma-separated list of specific routing values.</span>
 <span class="sd">        :arg scroll: Specify how long a consistent view of the index</span>
 <span class="sd">            should be maintained for scrolled search.</span>
+<span class="sd">        :arg search_pipeline: Customizable sequence of processing stages</span>
+<span class="sd">            applied to search queries.</span>
 <span class="sd">        :arg search_type: Search operation type. Valid choices are</span>
 <span class="sd">            query_then_fetch, dfs_query_then_fetch.</span>
 <span class="sd">        :arg seq_no_primary_term: Specify whether to return sequence</span>
