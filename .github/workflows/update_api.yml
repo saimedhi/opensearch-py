@@ -30,13 +30,13 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: GitHub App token
-if: ${{ github.repository == 'saimedhi/opensearch-py' }}
+        if: ${{ github.repository == 'saimedhi/opensearch-py' }}
         id: github_app_token
         uses: tibdex/github-app-token@v2.1.0
         with:
           app_id: ${{ secrets.CI_APP_ID }}
           private_key: ${{ secrets.CI_APP_PRIVATE_KEY }}
-                - name: Create pull request
+      - name: Create pull request
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
