@@ -28,10 +28,9 @@ jobs:
         run: nox -s generate
       - name: Update CHANGELOG
         uses: jacobtomlinson/gha-find-replace@v3
-        if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         with:
-          find: "- Your contribution here."
-          replace: "- Updated opensearch-py to reflect the latest OpenSearch API spec.\n- Your contribution here."
+          find: "### Updated APIs"
+          replace: "### Updated APIs\n- Updated opensearch-py to reflect the latest OpenSearch API spec."
           include: "**CHANGELOG.md"
       - name: Get current date
         id: date
