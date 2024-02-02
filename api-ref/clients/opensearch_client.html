@@ -1034,6 +1034,54 @@ internal, external, external_gte, force.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="opensearchpy.OpenSearch.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/opensearchpy/client.html#OpenSearch.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opensearchpy.OpenSearch.index" title="Permalink to this definition"></a></dt>
+<dd><p>Creates or updates a document in an index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – Index name.</p></li>
+<li><p><strong>body</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – The document</p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – Document ID.</p></li>
+<li><p><strong>if_primary_term</strong> – only perform the operation if the last
+operation that has changed the document has the specified primary term.</p></li>
+<li><p><strong>if_seq_no</strong> – only perform the operation if the last operation
+that has changed the document has the specified sequence number.</p></li>
+<li><p><strong>op_type</strong> – Explicit operation type. Defaults to <cite>index</cite> for
+requests with an explicit document ID, and to <cite>create</cite> for requests
+without an explicit document ID. Valid choices are index, create.</p></li>
+<li><p><strong>pipeline</strong> – The pipeline id to preprocess incoming documents
+with.</p></li>
+<li><p><strong>refresh</strong> – If <cite>true</cite> then refresh the affected shards to make
+this operation visible to search, if <cite>wait_for</cite> then wait for a refresh
+to make this operation visible to search, if <cite>false</cite> (the default) then
+do nothing with refreshes. Valid choices are true, false, wait_for.</p></li>
+<li><p><strong>require_alias</strong> – When true, requires destination to be an
+alias. Default is false.</p></li>
+<li><p><strong>routing</strong> – Routing value.</p></li>
+<li><p><strong>timeout</strong> – Operation timeout.</p></li>
+<li><p><strong>version</strong> – Explicit version number for concurrency control.</p></li>
+<li><p><strong>version_type</strong> – Specific version type. Valid choices are
+internal, external, external_gte, force.</p></li>
+<li><p><strong>wait_for_active_shards</strong> – Sets the number of shard copies
+that must be active before proceeding with the operation. Defaults to 1,
+meaning the primary shard only. Set to <cite>all</cite> for all shard copies,
+otherwise set to any non-negative value less than or equal to the total
+number of copies for the shard (number of replicas + 1). Default is 1.</p></li>
+<li><p><strong>index</strong> – </p></li>
+<li><p><strong>body</strong> – </p></li>
+<li><p><strong>id</strong> – </p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – </p></li>
+<li><p><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="opensearchpy.OpenSearch.info">
 <span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/opensearchpy/client.html#OpenSearch.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opensearchpy.OpenSearch.info" title="Permalink to this definition"></a></dt>
 <dd><p>Returns basic information about the cluster.</p>
