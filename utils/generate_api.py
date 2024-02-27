@@ -77,6 +77,8 @@ jinja_env = Environment(
     trim_blocks=True,
     lstrip_blocks=True,
 )
+# Changelog gets updated only when generated code is different from existing
+UPDATE_CHANGELOG = False
 
 
 def blacken(filename: Any) -> None:
@@ -174,30 +176,35 @@ class Module:
         update_header = True
         license_position = 0
 
+        before_gen_file_content = ""
         # Identifying the insertion point for the "THIS CODE IS AUTOMATICALLY GENERATED" header.
         if os.path.exists(self.filepath):
             with open(self.filepath, "r", encoding="utf-8") as file:
-                content = file.read()
-            if header_separator in content:
+                before_gen_file_content = file.read()
+            if header_separator in before_gen_file_content:
                 update_header = False
                 header_end_position = (
-                    content.find(header_separator) + len(header_separator) + 2
+                    before_gen_file_content.find(header_separator)
+                    + len(header_separator)
+                    + 2
                 )
-                header_position = content.rfind("\n", 0, header_end_position) + 1
-            if license_header_end_1 in content:
-                if license_header_end_2 in content:
+                header_position = (
+                    before_gen_file_content.rfind("\n", 0, header_end_position) + 1
+                )
+            if license_header_end_1 in before_gen_file_content:
+                if license_header_end_2 in before_gen_file_content:
                     position = (
-                        content.find(license_header_end_2)
+                        before_gen_file_content.find(license_header_end_2)
                         + len(license_header_end_2)
                         + 2
                     )
                 else:
                     position = (
-                        content.find(license_header_end_1)
+                        before_gen_file_content.find(license_header_end_1)
                         + len(license_header_end_1)
                         + 2
                     )
-                license_position = content.rfind("\n", 0, position) + 1
+                license_position = before_gen_file_content.rfind("\n", 0, position) + 1
 
         current_script_folder = os.path.dirname(os.path.abspath(__file__))
         generated_file_header_path = os.path.join(
@@ -255,6 +262,10 @@ class Module:
                 result = f"{utils_imports} {', '.join(present_keywords)}"
                 utils_imports = result
             file_content = content.replace("#replace_token#", utils_imports)
+
+        # Update changelog if generated file content differs from existing content
+        global UPDATE_CHANGELOG
+        UPDATE_CHANGELOG = before_gen_file_content != file_content
 
         with open(self.filepath, "w", encoding="utf-8") as file:
             file.write(file_content)
@@ -777,20 +788,23 @@ def dump_modules(modules: Any) -> None:
             f"Failed to fetch opensearch-api-specification commit information. Status code: {response.status_code}"
         )
 
-    with open("CHANGELOG.md", "r+", encoding="utf-8") as file:
-        content = file.read()
-        if commit_url not in content:
-            if "### Updated APIs" in content:
-                file_content = content.replace(
-                    "### Updated APIs",
-                    f"### Updated APIs\n- Updated opensearch-py APIs to reflect [opensearch-api-specification@{latest_commit_sha[:7]}]({commit_url})",
-                    1,
-                )
-                file.seek(0)
-                file.write(file_content)
-                file.truncate()
-            else:
-                raise Exception("'Updated APIs' section is not present in CHANGELOG.md")
+    if UPDATE_CHANGELOG is True:
+        with open("CHANGELOG.md", "r+", encoding="utf-8") as file:
+            content = file.read()
+            if commit_url not in content:
+                if "### Updated APIs" in content:
+                    file_content = content.replace(
+                        "### Updated APIs",
+                        f"### Updated APIs\n- Updated opensearch-py APIs to reflect [opensearch-api-specification@{latest_commit_sha[:7]}]({commit_url})",
+                        1,
+                    )
+                    file.seek(0)
+                    file.write(file_content)
+                    file.truncate()
+                else:
+                    raise Exception(
+                        "'Updated APIs' section is not present in CHANGELOG.md"
+                    )
 
 
 if __name__ == "__main__":
