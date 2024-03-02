@@ -43,6 +43,8 @@ from ..exceptions import (
 )
 from .base import Connection
 
+from opensearchpy.metrics import TimeMetrics
+
 # sentinel value for `verify_certs` and `ssl_show_warn`.
 # This is used to detect if a user is passing in a value
 # for SSL kwargs if also using an SSLContext.
@@ -117,6 +119,7 @@ class Urllib3HttpConnection(Connection):
         opaque_id: Any = None,
         **kwargs: Any
     ) -> None:
+        self.kwargs=kwargs
         # Initialize headers before calling super().__init__().
         self.headers = urllib3.make_headers(keep_alive=True)
 
@@ -232,6 +235,10 @@ class Urllib3HttpConnection(Connection):
         ignore: Collection[int] = (),
         headers: Optional[Mapping[str, str]] = None,
     ) -> Any:
+        calculate_service_time=False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time=self.kwargs["calculate_service_time"]
+
         if self.pool is None:
             self._create_urllib3_pool()
         assert self.pool is not None
@@ -244,6 +251,7 @@ class Urllib3HttpConnection(Connection):
 
         start = time.time()
         orig_body = body
+        time_metrics = TimeMetrics()
         try:
             kw = {}
             if timeout:
@@ -267,10 +275,11 @@ class Urllib3HttpConnection(Connection):
             if self.http_auth is not None:
                 if isinstance(self.http_auth, Callable):  # type: ignore
                     request_headers.update(self.http_auth(method, full_url, body))
-
+            time_metrics.events.request_start()
             response = self.pool.urlopen(
                 method, url, body, retries=Retry(False), headers=request_headers, **kw
             )
+            time_metrics.events.request_end()
             duration = time.time() - start
             raw_data = response.data.decode("utf-8", "surrogatepass")
         except reraise_exceptions:
@@ -304,7 +313,11 @@ class Urllib3HttpConnection(Connection):
             method, full_url, url, orig_body, response.status, raw_data, duration
         )
 
-        return response.status, response.headers, raw_data
+        if calculate_service_time:
+            return response.status, response.headers, raw_data, time_metrics.service_time
+        else:
+            return response.status, response.headers, raw_data
+
 
     def get_response_headers(self, response: Any) -> Any:
         return {header.lower(): value for header, value in response.headers.items()}

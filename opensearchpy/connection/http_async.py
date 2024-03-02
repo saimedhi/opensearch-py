@@ -25,6 +25,7 @@ from ..exceptions import (
     ImproperlyConfigured,
     SSLError,
 )
+from opensearchpy.metrics import TimeMetrics
 
 VERIFY_CERTS_DEFAULT = object()
 SSL_SHOW_WARN_DEFAULT = object()
@@ -55,7 +56,7 @@ class AsyncHttpConnection(AIOHttpConnection):
         **kwargs: Any
     ) -> None:
         self.headers = {}
-
+        self.kwargs=kwargs
         super().__init__(
             host=host,
             port=port,
@@ -157,6 +158,9 @@ class AsyncHttpConnection(AIOHttpConnection):
         ignore: Collection[int] = (),
         headers: Optional[Mapping[str, str]] = None,
     ) -> Any:
+        calculate_service_time=False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time=self.kwargs["calculate_service_time"]
         if self.session is None:
             await self._create_aiohttp_session()
         assert self.session is not None
@@ -211,7 +215,9 @@ class AsyncHttpConnection(AIOHttpConnection):
             }
 
         start = self.loop.time()
+        time_metrics = TimeMetrics()
         try:
+            time_metrics.events.request_start()
             async with self.session.request(
                 method,
                 url,
@@ -227,6 +233,7 @@ class AsyncHttpConnection(AIOHttpConnection):
                 else:
                     raw_data = await response.text()
                 duration = self.loop.time() - start
+            time_metrics.events.request_end()
 
         # We want to reraise a cancellation or recursion error.
         except reraise_exceptions:
@@ -269,7 +276,10 @@ class AsyncHttpConnection(AIOHttpConnection):
             method, str(url), url_path, orig_body, response.status, raw_data, duration
         )
 
-        return response.status, response.headers, raw_data
+        if calculate_service_time:
+            return response.status, response.headers, raw_data, time_metrics.service_time
+        else:
+            return response.status, response.headers, raw_data
 
     async def close(self) -> Any:
         """

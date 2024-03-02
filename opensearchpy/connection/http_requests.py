@@ -28,6 +28,7 @@
 import time
 import warnings
 from typing import Any, Collection, Mapping, Optional, Union
+from opensearchpy.metrics import TimeMetrics
 
 try:
     import requests
@@ -88,6 +89,7 @@ class RequestsHttpConnection(Connection):
         pool_maxsize: Any = None,
         **kwargs: Any
     ) -> None:
+        self.kwargs=kwargs
         if not REQUESTS_AVAILABLE:
             raise ImproperlyConfigured(
                 "Please install requests to use RequestsHttpConnection."
@@ -166,6 +168,9 @@ class RequestsHttpConnection(Connection):
         ignore: Collection[int] = (),
         headers: Optional[Mapping[str, str]] = None,
     ) -> Any:
+        calculate_service_time=False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time=self.kwargs["calculate_service_time"]
         url = self.base_url + url
         headers = headers or {}
         if params:
@@ -187,8 +192,23 @@ class RequestsHttpConnection(Connection):
             "allow_redirects": allow_redirects,
         }
         send_kwargs.update(settings)
-        try:
+        # # Create an instance of Events
+        # request_events = Events()
+        
+        # # Subscribe event handlers to the respective events
+        # request_events.request_start += self.handle_request_start
+        # request_events.request_end += self.handle_request_end
+        time_metrics = TimeMetrics()
+        try:           
+            # request_events.request_start()
+            time_metrics.events.request_start()
+            print("11111")
             response = self.session.send(prepared_request, **send_kwargs)
+            print("prepared_request", prepared_request)
+            time_metrics.events.request_end()
+            print("time_metrics.service_time",time_metrics.service_time)
+            # request_events.request_end()
+            print("2222222")
             duration = time.time() - start
             raw_data = response.content.decode("utf-8", "surrogatepass")
         except reraise_exceptions:
@@ -243,8 +263,10 @@ class RequestsHttpConnection(Connection):
             raw_data,
             duration,
         )
-
-        return response.status_code, response.headers, raw_data
+        if calculate_service_time:
+            return response.status_code, response.headers, raw_data, time_metrics.service_time
+        else:
+            return response.status_code, response.headers, raw_data
 
     @property
     def headers(self) -> Any:  # type: ignore
