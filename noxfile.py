@@ -70,13 +70,14 @@ def format(session: Any) -> None:
     runs black and isort to format the files accordingly
     :param session: current nox session
     """
+    print("formatter started")
     session.install(".")
     session.install("black", "isort")
 
     session.run("isort", *SOURCE_FILES)
     session.run("black", *SOURCE_FILES)
     session.run("python", "utils/license_headers.py", "fix", *SOURCE_FILES)
-
+    print("formatter stopped")
     # session.notify("lint")
 
 
@@ -150,28 +151,40 @@ def generate(session: Any) -> None:
     session.install("-rdev-requirements.txt")
     # Define paths
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    before_path = os.path.join(current_dir, "before_generate_opensearchpy")
+    before_path = os.path.join(current_dir, "before_generate_client")
     # Create snapshots of the opensearchpy directory before and after running the generate session
-    shutil.copytree(os.path.join(current_dir, "opensearchpy"), before_path)
+    if os.path.exists(before_path):
+        # If it exists, delete the directory
+        os.rmdir(before_path)
+
+    shutil.copytree(os.path.join(current_dir, "opensearchpy/client"), before_path)
     session.run("python", "utils/generate_api.py")
     session.run("nox", "-s", "format")
 
-    after_path = os.path.join(current_dir, "opensearchpy")
+    after_path = os.path.join(current_dir, "opensearchpy/client")
+    print("before_path", before_path)
+    print("after_path", after_path)
     # # Compare the two snapshots
     # diff_files = filecmp.dircmp(
     #     before_path, os.path.join(current_dir, "opensearchpy")
     # ).diff_files
     # print("diff_files", diff_files)
 
-    all_files_dir1 = set(os.listdir(before_path))
-    all_files_dir2 = set(os.listdir(after_path))
+    all_files_dir1 = set(
+        file for file in os.listdir(before_path) if file.endswith(".py")
+    )
+    all_files_dir2 = set(
+        file for file in os.listdir(after_path) if file.endswith(".py")
+    )
+    print("all_files_dir1", all_files_dir1)
+    print("all_files_dir2", all_files_dir2)
 
     # Find the union of file names
     all_files_union = all_files_dir1.union(all_files_dir2)
-    print("all_files_union", all_files_union)
+    # print("all_files_union", all_files_union)
 
     match, mismatch, errors = filecmp.cmpfiles(
-        before_path, after_path, all_files_union, shallow=False
+        before_path, after_path, all_files_union, shallow=True
     )
     print("match, mismatch, errors", match, mismatch, errors)
     if len(mismatch) > 0 or len(errors) > 0:
