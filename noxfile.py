@@ -25,6 +25,9 @@
 #  under the License.
 
 
+import filecmp
+import os
+import shutil
 from typing import Any
 
 import nox
@@ -74,7 +77,7 @@ def format(session: Any) -> None:
     session.run("black", *SOURCE_FILES)
     session.run("python", "utils/license_headers.py", "fix", *SOURCE_FILES)
 
-    session.notify("lint")
+    # session.notify("lint")
 
 
 @nox.session(python=["3.7"])  # type: ignore
@@ -145,5 +148,38 @@ def generate(session: Any) -> None:
     :param session: current nox session
     """
     session.install("-rdev-requirements.txt")
+    # Define paths
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    before_path = os.path.join(current_dir, "before_generate_opensearchpy")
+    # Create snapshots of the opensearchpy directory before and after running the generate session
+    shutil.copytree(os.path.join(current_dir, "opensearchpy"), before_path)
     session.run("python", "utils/generate_api.py")
-    session.notify("format")
+    session.run("nox", "-s", "format")
+
+    after_path = os.path.join(current_dir, "opensearchpy")
+    # # Compare the two snapshots
+    # diff_files = filecmp.dircmp(
+    #     before_path, os.path.join(current_dir, "opensearchpy")
+    # ).diff_files
+    # print("diff_files", diff_files)
+
+    all_files_dir1 = set(os.listdir(before_path))
+    all_files_dir2 = set(os.listdir(after_path))
+
+    # Find the union of file names
+    all_files_union = all_files_dir1.union(all_files_dir2)
+    print("all_files_union", all_files_union)
+
+    match, mismatch, errors = filecmp.cmpfiles(
+        before_path, after_path, all_files_union, shallow=False
+    )
+    print("match, mismatch, errors", match, mismatch, errors)
+    if len(mismatch) > 0 or len(errors) > 0:
+        print("Changes detected in the opensearchpy directory:")
+        session.run("python", "utils/changelog_updater.py")
+
+    else:
+        print("No changes detected in the opensearchpy directory")
+
+    # Clean up
+    shutil.rmtree(before_path)
