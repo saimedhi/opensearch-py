@@ -154,8 +154,8 @@ def generate(session: Any) -> None:
     before_path = os.path.join(current_dir, "before_generate_client")
     # Create snapshots of the opensearchpy directory before and after running the generate session
     if os.path.exists(before_path):
-        # If it exists, delete the directory
         os.rmdir(before_path)
+
 
     shutil.copytree(os.path.join(current_dir, "opensearchpy/client"), before_path)
     session.run("python", "utils/generate_api.py")
@@ -192,6 +192,7 @@ def generate(session: Any) -> None:
         session.run("python", "utils/changelog_updater.py")
 
     else:
+        
         print("No changes detected in the opensearchpy directory")
 
     # Clean up
