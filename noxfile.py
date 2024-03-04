@@ -25,6 +25,9 @@
 #  under the License.
 
 
+import filecmp
+import os
+import shutil
 from typing import Any
 
 import nox
@@ -145,5 +148,63 @@ def generate(session: Any) -> None:
     :param session: current nox session
     """
     session.install("-rdev-requirements.txt")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    before_paths = [
+        os.path.join(current_dir, f"before_generate/{folder}")
+        for folder in ["client", "async_client"]
+    ]
+
+    for path in before_paths:
+        if os.path.exists(path):
+            shutil.rmtree(path)
+
+    shutil.copytree(os.path.join(current_dir, "opensearchpy/client"), before_paths[0])
+    shutil.copytree(
+        os.path.join(current_dir, "opensearchpy/_async/client"), before_paths[1]
+    )
+
     session.run("python", "utils/generate_api.py")
-    session.notify("format")
+    session.run("nox", "-s", "format", external=True)
+
+    after_paths = [
+        os.path.join(current_dir, f"opensearchpy/{folder}")
+        for folder in ["client", "_async/client"]
+    ]
+
+    # Compare only .py files and take their union for client and async_client directories
+    before_files_client = set(
+        file for file in os.listdir(before_paths[0]) if file.endswith(".py")
+    )
+    after_files_client = set(
+        file for file in os.listdir(after_paths[0]) if file.endswith(".py")
+    )
+
+    before_files_async_client = set(
+        file for file in os.listdir(before_paths[1]) if file.endswith(".py")
+    )
+    after_files_async_client = set(
+        file for file in os.listdir(after_paths[1]) if file.endswith(".py")
+    )
+
+    all_files_union_client = before_files_client.union(after_files_client)
+    all_files_union_async_client = before_files_async_client.union(
+        after_files_async_client
+    )
+
+    # Compare files and check for mismatches or errors for client and async_client directories
+    mismatch_client, errors_client = filecmp.cmpfiles(
+        before_paths[0], after_paths[0], all_files_union_client, shallow=True
+    )[1:]
+    mismatch_async_client, errors_async_client = filecmp.cmpfiles(
+        before_paths[1], after_paths[1], all_files_union_async_client, shallow=True
+    )[1:]
+
+    if mismatch_client or errors_client or mismatch_async_client or errors_async_client:
+        print("Changes detected in the opensearchpy directory:")
+        session.run("python", "utils/changelog_updater.py")
+    else:
+        print("No changes detected in the opensearchpy directory")
+
+    # Clean up
+    for path in before_paths:
+        shutil.rmtree(path)
