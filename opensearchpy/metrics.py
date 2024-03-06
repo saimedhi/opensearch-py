@@ -16,9 +16,10 @@ from events import Events
 class TimeMetrics:
     def __init__(self) -> None:
         self.events = Events()
-        self.start_time = time.perf_counter()
-        self.end_time = time.perf_counter()
-        self.service_time = 0
+        current_time = time.perf_counter()
+        self.start_time = current_time
+        self.end_time = current_time
+        self.service_time = 0.0
 
         # Subscribe to the server_request_start and server_request_end events
         self.events.server_request_start += self.server_request_start
