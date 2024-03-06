@@ -401,19 +401,39 @@ class Transport(object):
             method, params, body
         )
 
+        calculate_service_time = False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time = self.kwargs["calculate_service_time"]
+
         for attempt in range(self.max_retries + 1):
             connection = self.get_connection()
 
             try:
-                status, headers_response, data = connection.perform_request(
-                    method,
-                    url,
-                    params,
-                    body,
-                    headers=headers,
-                    ignore=ignore,
-                    timeout=timeout,
-                )
+                if calculate_service_time:
+                    (
+                        status,
+                        headers_response,
+                        data,
+                        service_time,
+                    ) = connection.perform_request(
+                        method,
+                        url,
+                        params,
+                        body,
+                        headers=headers,
+                        ignore=ignore,
+                        timeout=timeout,
+                    )
+                else:
+                    status, headers_response, data = connection.perform_request(
+                        method,
+                        url,
+                        params,
+                        body,
+                        headers=headers,
+                        ignore=ignore,
+                        timeout=timeout,
+                    )
 
                 # Lowercase all the header names for consistency in accessing them.
                 headers_response = {
@@ -457,6 +477,10 @@ class Transport(object):
                     data = self.deserializer.loads(
                         data, headers_response.get("content-type")
                     )
+
+                if calculate_service_time:
+                    data["client_metrics"] = {"service_time": service_time}
+
                 return data
 
     def close(self) -> Any:

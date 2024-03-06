@@ -28,10 +28,13 @@
 import asyncio
 import os
 import ssl
+import time
 import warnings
 from typing import Any, Collection, Mapping, Optional, Union
 
 import urllib3
+
+from opensearchpy.metrics import TimeMetrics
 
 from ..compat import reraise_exceptions, urlencode
 from ..connection.base import Connection
@@ -130,6 +133,7 @@ class AIOHttpConnection(AsyncConnection):
         """
 
         self.headers = {}
+        self.kwargs = kwargs
 
         super().__init__(
             host=host,
@@ -291,8 +295,14 @@ class AIOHttpConnection(AsyncConnection):
             body = self._gzip_compress(body)
             req_headers["content-encoding"] = "gzip"
 
-        start = self.loop.time()
+        calculate_service_time = False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time = self.kwargs["calculate_service_time"]
+
+        time_metrics = TimeMetrics()
+
         try:
+            time_metrics.events.server_request_start()
             async with self.session.request(
                 method,
                 url,
@@ -306,7 +316,7 @@ class AIOHttpConnection(AsyncConnection):
                     raw_data = ""
                 else:
                     raw_data = await response.text()
-                duration = self.loop.time() - start
+                time_metrics.events.server_request_end()
 
         # We want to reraise a cancellation or recursion error.
         except reraise_exceptions:
@@ -317,7 +327,7 @@ class AIOHttpConnection(AsyncConnection):
                 url,
                 url_path,
                 orig_body,
-                self.loop.time() - start,
+                time.perf_counter() - time_metrics.start_time,
                 exception=e,
             )
             if isinstance(e, aiohttp_exceptions.ServerFingerprintMismatch):
@@ -339,7 +349,7 @@ class AIOHttpConnection(AsyncConnection):
                 url,
                 url_path,
                 orig_body,
-                duration,
+                time_metrics.service_time,
                 status_code=response.status,
                 response=raw_data,
             )
@@ -350,10 +360,24 @@ class AIOHttpConnection(AsyncConnection):
             )
 
         self.log_request_success(
-            method, url, url_path, orig_body, response.status, raw_data, duration
+            method,
+            url,
+            url_path,
+            orig_body,
+            response.status,
+            raw_data,
+            time_metrics.service_time,
         )
 
-        return response.status, response.headers, raw_data
+        if calculate_service_time:
+            return (
+                response.status,
+                response.headers,
+                raw_data,
+                time_metrics.service_time,
+            )
+        else:
+            return response.status, response.headers, raw_data
 
     async def close(self) -> Any:
         """

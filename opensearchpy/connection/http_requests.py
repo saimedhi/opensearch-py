@@ -29,6 +29,8 @@ import time
 import warnings
 from typing import Any, Collection, Mapping, Optional, Union
 
+from opensearchpy.metrics import TimeMetrics
+
 try:
     import requests
 
@@ -88,6 +90,7 @@ class RequestsHttpConnection(Connection):
         pool_maxsize: Any = None,
         **kwargs: Any
     ) -> None:
+        self.kwargs = kwargs
         if not REQUESTS_AVAILABLE:
             raise ImproperlyConfigured(
                 "Please install requests to use RequestsHttpConnection."
@@ -176,7 +179,6 @@ class RequestsHttpConnection(Connection):
             body = self._gzip_compress(body)
             headers["content-encoding"] = "gzip"  # type: ignore
 
-        start = time.time()
         request = requests.Request(method=method, headers=headers, url=url, data=body)
         prepared_request = self.session.prepare_request(request)
         settings = self.session.merge_environment_settings(
@@ -187,9 +189,17 @@ class RequestsHttpConnection(Connection):
             "allow_redirects": allow_redirects,
         }
         send_kwargs.update(settings)
+
+        calculate_service_time = False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time = self.kwargs["calculate_service_time"]
+
+        time_metrics = TimeMetrics()
+
         try:
+            time_metrics.events.server_request_start()
             response = self.session.send(prepared_request, **send_kwargs)
-            duration = time.time() - start
+            time_metrics.events.server_request_end()
             raw_data = response.content.decode("utf-8", "surrogatepass")
         except reraise_exceptions:
             raise
@@ -199,7 +209,7 @@ class RequestsHttpConnection(Connection):
                 url,
                 prepared_request.path_url,
                 orig_body,
-                time.time() - start,
+                time.perf_counter() - time_metrics.start_time,
                 exception=e,
             )
             if isinstance(e, requests.exceptions.SSLError):
@@ -224,7 +234,7 @@ class RequestsHttpConnection(Connection):
                 url,
                 response.request.path_url,
                 orig_body,
-                duration,
+                time_metrics.service_time,
                 response.status_code,
                 raw_data,
             )
@@ -241,10 +251,17 @@ class RequestsHttpConnection(Connection):
             orig_body,
             response.status_code,
             raw_data,
-            duration,
+            time_metrics.service_time,
         )
-
-        return response.status_code, response.headers, raw_data
+        if calculate_service_time:
+            return (
+                response.status_code,
+                response.headers,
+                raw_data,
+                time_metrics.service_time,
+            )
+        else:
+            return response.status_code, response.headers, raw_data
 
     @property
     def headers(self) -> Any:  # type: ignore

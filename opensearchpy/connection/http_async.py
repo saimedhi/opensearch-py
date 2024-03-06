@@ -12,8 +12,11 @@
 import asyncio
 import os
 import ssl
+import time
 import warnings
 from typing import Any, Collection, Mapping, Optional, Union
+
+from opensearchpy.metrics import TimeMetrics
 
 from .._async._extra_imports import aiohttp, aiohttp_exceptions  # type: ignore
 from .._async.compat import get_running_loop
@@ -55,7 +58,7 @@ class AsyncHttpConnection(AIOHttpConnection):
         **kwargs: Any
     ) -> None:
         self.headers = {}
-
+        self.kwargs = kwargs
         super().__init__(
             host=host,
             port=port,
@@ -210,8 +213,14 @@ class AsyncHttpConnection(AIOHttpConnection):
                 **self._http_auth(method, url, query_string, body),
             }
 
-        start = self.loop.time()
+        calculate_service_time = False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time = self.kwargs["calculate_service_time"]
+
+        time_metrics = TimeMetrics()
+
         try:
+            time_metrics.events.server_request_start()
             async with self.session.request(
                 method,
                 url,
@@ -226,7 +235,7 @@ class AsyncHttpConnection(AIOHttpConnection):
                     raw_data = ""
                 else:
                     raw_data = await response.text()
-                duration = self.loop.time() - start
+                time_metrics.events.server_request_end()
 
         # We want to reraise a cancellation or recursion error.
         except reraise_exceptions:
@@ -237,7 +246,7 @@ class AsyncHttpConnection(AIOHttpConnection):
                 str(url),
                 url_path,
                 orig_body,
-                self.loop.time() - start,
+                time.perf_counter() - time_metrics.start_time,
                 exception=e,
             )
             if isinstance(e, aiohttp_exceptions.ServerFingerprintMismatch):
@@ -259,17 +268,31 @@ class AsyncHttpConnection(AIOHttpConnection):
                 str(url),
                 url_path,
                 orig_body,
-                duration,
+                time_metrics.service_time,
                 status_code=response.status,
                 response=raw_data,
             )
             self._raise_error(response.status, raw_data)
 
         self.log_request_success(
-            method, str(url), url_path, orig_body, response.status, raw_data, duration
+            method,
+            str(url),
+            url_path,
+            orig_body,
+            response.status,
+            raw_data,
+            time_metrics.service_time,
         )
 
-        return response.status, response.headers, raw_data
+        if calculate_service_time:
+            return (
+                response.status,
+                response.headers,
+                raw_data,
+                time_metrics.service_time,
+            )
+        else:
+            return response.status, response.headers, raw_data
 
     async def close(self) -> Any:
         """
