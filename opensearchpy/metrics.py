@@ -14,19 +14,19 @@ from events import Events
 
 
 class TimeMetrics:
-    def __init__(self):
+    def __init__(self) -> None:
         self.events = Events()
-        self.start_time = 0
-        self.end_time = 0
-        self.service_time = 0
+        self.start_time = None
+        self.end_time = None
+        self.service_time = None
 
         # Subscribe to the server_request_start and server_request_end events
         self.events.server_request_start += self.server_request_start
         self.events.server_request_end += self.server_request_end
 
-    def server_request_start(self):
+    def server_request_start(self) -> None:
         self.start_time = time.perf_counter()
 
-    def server_request_end(self):
+    def server_request_end(self) -> None:
         self.end_time = time.perf_counter()
         self.service_time = self.end_time - self.start_time
