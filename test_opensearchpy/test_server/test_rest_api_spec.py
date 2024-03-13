@@ -322,7 +322,9 @@ class YamlRunner:
             max_version = _get_version(max_version) or (999,)
             print("min_version", min_version)
             print("max_version", max_version)
+            print("max_version", self.opensearch_version())
             if min_version <= (self.opensearch_version()) <= max_version:
+                print("printed skipped")
                 pytest.skip(reason)
 
     def run_gt(self, action: Any) -> None:
