@@ -61,3 +61,22 @@ class TestClose(OpenSearchTestCase):
         for _ in range(2):
             with self.client as client:
                 client.cluster.health()
+
+
+class Testfailingtest(OpenSearchTestCase):
+
+def Testfailingtest(self) -> None:
+# Create index with specified settings
+self.client.indices.create(
+    index='test',
+    body={
+        "settings": {
+            "index.number_of_shards": 2,
+            "index.number_of_replicas": 1
+        }
+    }
+)
+
+# Perform force merge operation and verify total shards
+response = self.client.indices.forcemerge(index='test', primary_only=True)
+assert response['_shards']['total'] == 2
