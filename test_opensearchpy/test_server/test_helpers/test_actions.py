@@ -770,3 +770,4 @@ class TestParentChildReindex(OpenSearchTestCase):
             {"some": "data", "question_answer": {"name": "answer", "parent": 42}},
             self.client.get(index="test-index", id=47, routing=42)["_source"],
         )
+        
