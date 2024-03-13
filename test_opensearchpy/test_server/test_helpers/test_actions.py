@@ -72,6 +72,7 @@ class Testfailingtest(OpenSearchTestCase):
         response = self.client.indices.forcemerge(index='test', primary_only=True)
         print("response printed", response)
         assert response['_shards']['total'] == 2
+        assert 1 == 2
 
 class TestStreamingBulk(OpenSearchTestCase):
     def test_actions_remain_unchanged(self) -> None:
