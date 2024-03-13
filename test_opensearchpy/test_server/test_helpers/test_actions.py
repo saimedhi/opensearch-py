@@ -55,6 +55,23 @@ class FailingBulkClient(object):
             raise self._fail_with
         return self.client.bulk(*args, **kwargs)
 
+class Testfailingtest(OpenSearchTestCase):
+    def Testfailingtest(self) -> None:
+        # Create index with specified settings
+        self.client.indices.create(
+            index='test',
+            body={
+                "settings": {
+                    "index.number_of_shards": 2,
+                    "index.number_of_replicas": 1
+                }
+            }
+        )
+        
+        # Perform force merge operation and verify total shards
+        response = self.client.indices.forcemerge(index='test', primary_only=True)
+        print("response printed", response printed)
+        assert response['_shards']['total'] == 2
 
 class TestStreamingBulk(OpenSearchTestCase):
     def test_actions_remain_unchanged(self) -> None:
