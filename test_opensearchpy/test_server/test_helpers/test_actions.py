@@ -70,7 +70,7 @@ class Testfailingtest(OpenSearchTestCase):
         
         # Perform force merge operation and verify total shards
         response = self.client.indices.forcemerge(index='test', primary_only=True)
-        print("response printed", response printed)
+        print("response printed", response)
         assert response['_shards']['total'] == 2
 
 class TestStreamingBulk(OpenSearchTestCase):
