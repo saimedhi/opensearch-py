@@ -316,8 +316,12 @@ class YamlRunner:
             if version == "all":
                 pytest.skip(reason)
             min_version, max_version = version.split("-")
+            print("_get_version(min_version)", _get_version(min_version))
+            print("_get_version(max_version)", _get_version(max_version))
             min_version = _get_version(min_version) or (0,)
             max_version = _get_version(max_version) or (999,)
+            print("min_version", min_version)
+            print("max_version", max_version)
             if min_version <= (self.opensearch_version()) <= max_version:
                 pytest.skip(reason)
 
