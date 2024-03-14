@@ -373,6 +373,8 @@ class YamlRunner:
 
     def run_match(self, action: Any) -> None:
         for path, expected in action.items():
+            print("expected @before", expected )
+            print("path @before ", path)
             value = self._lookup(path)
             expected = self._resolve(expected)
             print("expected before", expected )
@@ -440,9 +442,12 @@ class YamlRunner:
         return value
 
     def _lookup(self, path: str) -> Any:
+        print("lookup printed path",path)
         # fetch the possibly nested value from last_response
         value: Any = self.last_response
+        print("lookup printed value1",value)
         if path == "$body":
+            print("lookup printed value2",value)
             return value
         path = path.replace(r"\.", "\1")
         step: Any
@@ -461,10 +466,12 @@ class YamlRunner:
                 assert isinstance(value, list)
                 assert len(value) > step
             elif step == "_arbitrary_key_":
+                print("lookup printed value3",list(value.keys())[0])
                 return list(value.keys())[0]
             else:
                 assert step in value
             value = value[step]
+        print("lookup printed value4",value)
         return value
 
     def _feature_enabled(self, name: str) -> Any:
@@ -472,6 +479,8 @@ class YamlRunner:
 
     def _assert_match_equals(self, a: Any, b: Any) -> None:
         # Handle for large floating points with 'E'
+        print("_assert_match_equals a", a)
+        print("_assert_match_equals b", b)
         if isinstance(b, string_types) and isinstance(a, float) and "e" in repr(a):
             a = repr(a).replace("e+", "E")
 
