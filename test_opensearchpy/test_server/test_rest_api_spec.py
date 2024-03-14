@@ -434,7 +434,9 @@ class YamlRunner:
                         break
 
         if isinstance(value, string_types):
+            print("value123", value)
             value = value.strip()
+            print("value abc", value)
         elif isinstance(value, dict):
             value = dict((k, self._resolve(v)) for (k, v) in value.items())
         elif isinstance(value, list):
