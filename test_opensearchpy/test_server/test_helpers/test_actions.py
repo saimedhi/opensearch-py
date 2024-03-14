@@ -74,6 +74,51 @@ class TestFailingTest(OpenSearchTestCase):
         assert 1 == 2
         assert response['_shards']['total'] == 2
 
+    def test_plain_highlighter_without_offsets_succeed(self) -> None:
+        # Create index with specified settings and mappings
+        self.client.indices.create(
+            index='test1',
+            body={
+                "settings": {
+                    "number_of_shards": 1,
+                    "index.highlight.max_analyzed_offset": 10
+                },
+                "mappings": {
+                    "properties": {
+                        "field1": {"type": "text"},
+                        "field2": {"type": "text", "index_options": "offsets"}
+                    }
+                }
+            }
+        )
+    
+        # Index a document with specified ID and fields
+        self.client.index(
+            index='test1',
+            id=1,
+            body={
+                "field1": "The quick brown fox went to the forest and saw another fox.",
+                "field2": "The quick brown fox went to the forest and saw another fox."
+            }
+        )
+    
+        # Refresh indices to make changes visible
+        self.client.indices.refresh(index='test1')
+    
+        # Perform search with plain highlighter and verify result
+        response = self.client.search(
+            index='test1',
+            body={
+                "query": {"match": {"field1": "quick"}},
+                "highlight": {"type": "plain", "fields": {"field1": {"max_analyzer_offset": 10}}}
+            },
+            rest_total_hits_as_int=True
+        )
+    
+        # Assert the highlighted text matches the expected result
+        assert response['hits']['hits'][0]['highlight']['field1'][0] == "The <em>quick</em> "
+    
+
 class TestStreamingBulk(OpenSearchTestCase):
     def test_actions_remain_unchanged(self) -> None:
         actions = [{"_id": 1}, {"_id": 2}]
