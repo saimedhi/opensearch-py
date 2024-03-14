@@ -558,6 +558,7 @@ def load_rest_api_tests() -> None:
                 if pytest_test_name in SKIP_TESTS or pytest_param_id in SKIP_TESTS:
                     pytest_param["skip"] = True
 
+                print("pytest_param_id", pytest_param_id)
                 YAML_TEST_SPECS.append(pytest.param(pytest_param, id=pytest_param_id))
 
     except Exception as e:
