@@ -369,12 +369,12 @@ class YamlRunner:
     def run_match(self, action: Any) -> None:
         for path, expected in action.items():
             print("path printed before", path)
-            print("expected printed before", expected)
+            print("expected printed before", str(expected))
             print("......................")
             value = self._lookup(path)
             expected = self._resolve(expected)
-            print("value printed", value)
-            print("expected printed", expected)
+            print("value printed", str(value))
+            print("expected printed", str(expected))
 
             if (
                 isinstance(expected, str)
