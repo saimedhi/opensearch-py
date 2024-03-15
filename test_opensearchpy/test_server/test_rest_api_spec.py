@@ -370,18 +370,22 @@ class YamlRunner:
         for path, expected in action.items():
             value = self._lookup(path)
             expected = self._resolve(expected)
-
+            print("value printed", value)
+            print("expected printed", expected)
+            
             if (
                 isinstance(expected, str)
                 and expected.startswith("/")
                 and expected.endswith("/")
             ):
+                print("entered if")
                 expected = re.compile(expected[1:-1], re.VERBOSE | re.MULTILINE)
                 assert expected.search(value), "%r does not match %r" % (
                     value,
                     expected,
                 )
             else:
+                print("entered else")
                 self._assert_match_equals(value, expected)
 
     def run_contains(self, action: Any) -> None:
@@ -419,8 +423,8 @@ class YamlRunner:
                         value = value.replace(key_replace, v)
                         break
 
-        if (isinstance(value, string_types) and "cat" in self._test_id):
-            value = value.strip()
+        # if (isinstance(value, string_types) and "cat" in self._test_id):
+        #     value = value.strip()
         elif isinstance(value, dict):
             value = dict((k, self._resolve(v)) for (k, v) in value.items())
         elif isinstance(value, list):
