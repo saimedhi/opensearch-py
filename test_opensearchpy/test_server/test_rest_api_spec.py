@@ -153,11 +153,13 @@ class YamlRunner:
         self._setup_code: Any = None
         self._teardown_code: Any = None
         self._state: Any = {}
+        self._test_id: Any = None
 
     def use_spec(self, test_spec: Any) -> None:
         self._setup_code = test_spec.pop("setup", None)
         self._run_code = test_spec.pop("run", None)
         self._teardown_code = test_spec.pop("teardown", None)
+        self._test_id = test_spec.pop("test_id", None)
 
     def setup(self) -> Any:
         """Pull skips from individual tests to not do unnecessary setup."""
@@ -417,7 +419,7 @@ class YamlRunner:
                         value = value.replace(key_replace, v)
                         break
 
-        if isinstance(value, string_types):
+        if (isinstance(value, string_types) and "cat" in self._test_id):
             value = value.strip()
         elif isinstance(value, dict):
             value = dict((k, self._resolve(v)) for (k, v) in value.items())
@@ -528,6 +530,7 @@ def load_rest_api_tests() -> None:
                     "setup": setup_steps,
                     "run": test_step,
                     "teardown": teardown_steps,
+                    "test_id": pytest_param_id,
                 }
                 # Skip either 'test_name' or 'test_name[x]'
                 if pytest_test_name in SKIP_TESTS or pytest_param_id in SKIP_TESTS:
