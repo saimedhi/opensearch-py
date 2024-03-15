@@ -375,8 +375,12 @@ class YamlRunner:
             expected = self._resolve(expected)
             print("value printed", value)
             print("expected printed", expected)
-            
-            if (isinstance(expected, str) and re.match(r'^/.*/$', expected)):
+
+            if (
+                isinstance(expected, str)
+                and expected.strip().startswith("/")
+                and expected.strip().endswith("/")
+            ):
                 print("entered if")
                 expected = re.compile(expected[1:-1], re.VERBOSE | re.MULTILINE)
                 assert expected.search(value), "%r does not match %r" % (
