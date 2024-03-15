@@ -382,7 +382,7 @@ class YamlRunner:
                 and expected.strip().endswith("/")
             ):
                 print("entered if")
-                expected = re.compile(expected[1:-1], re.VERBOSE | re.MULTILINE)
+                expected = re.compile(expected.strip()[1:-1], re.VERBOSE | re.MULTILINE)
                 assert expected.search(value), "%r does not match %r" % (
                     value,
                     expected,
