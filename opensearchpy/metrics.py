@@ -17,7 +17,7 @@ from events import Events
 class Metrics(ABC):
     def __init__(self) -> None:
         self.service_time = 0.0
-    
+
     @abstractmethod
     def request_start(self) -> None:
         pass
