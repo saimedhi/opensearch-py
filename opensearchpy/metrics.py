@@ -9,7 +9,7 @@
 
 
 import time
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 
 from events import Events
 
