@@ -36,6 +36,8 @@ try:
 except ImportError:
     REQUESTS_AVAILABLE = False
 
+from opensearchpy.metrics import Metrics, MetricsEvents
+
 from ..compat import reraise_exceptions, string_types, urlencode
 from ..exceptions import (
     ConnectionError,
@@ -86,8 +88,10 @@ class RequestsHttpConnection(Connection):
         http_compress: Any = None,
         opaque_id: Any = None,
         pool_maxsize: Any = None,
+        metrics: Optional[Metrics] = None,
         **kwargs: Any
     ) -> None:
+        self.metrics = metrics
         if not REQUESTS_AVAILABLE:
             raise ImproperlyConfigured(
                 "Please install requests to use RequestsHttpConnection."
@@ -176,7 +180,6 @@ class RequestsHttpConnection(Connection):
             body = self._gzip_compress(body)
             headers["content-encoding"] = "gzip"  # type: ignore
 
-        start = time.time()
         request = requests.Request(method=method, headers=headers, url=url, data=body)
         prepared_request = self.session.prepare_request(request)
         settings = self.session.merge_environment_settings(
@@ -187,9 +190,14 @@ class RequestsHttpConnection(Connection):
             "allow_redirects": allow_redirects,
         }
         send_kwargs.update(settings)
+        self.is_metrics_none = False
+        if self.metrics is None:
+            self.metrics = MetricsEvents()
+            self.is_metrics_none = True
         try:
+            self.metrics.request_start()
             response = self.session.send(prepared_request, **send_kwargs)
-            duration = time.time() - start
+            self.metrics.request_end()
             raw_data = response.content.decode("utf-8", "surrogatepass")
         except reraise_exceptions:
             raise
@@ -199,9 +207,11 @@ class RequestsHttpConnection(Connection):
                 url,
                 prepared_request.path_url,
                 orig_body,
-                time.time() - start,
+                time.perf_counter() - self.metrics.start_time,
                 exception=e,
             )
+            if self.is_metrics_none:
+                self.metrics = None
             if isinstance(e, requests.exceptions.SSLError):
                 raise SSLError("N/A", str(e), e)
             if isinstance(e, requests.Timeout):
@@ -224,10 +234,12 @@ class RequestsHttpConnection(Connection):
                 url,
                 response.request.path_url,
                 orig_body,
-                duration,
+                self.metrics.service_time,
                 response.status_code,
                 raw_data,
             )
+            if self.is_metrics_none:
+                self.metrics = None
             self._raise_error(
                 response.status_code,
                 raw_data,
@@ -241,10 +253,19 @@ class RequestsHttpConnection(Connection):
             orig_body,
             response.status_code,
             raw_data,
-            duration,
+            self.metrics.service_time,
         )
 
-        return response.status_code, response.headers, raw_data
+        if self.is_metrics_none:
+            self.metrics = None
+            return response.status_code, response.headers, raw_data
+        else:
+            return (
+                response.status_code,
+                response.headers,
+                raw_data,
+                self.metrics.service_time,
+            )
 
     @property
     def headers(self) -> Any:  # type: ignore
