@@ -29,6 +29,7 @@ class Metrics(ABC):
 
 class MetricsEvents(Metrics):
     def __init__(self) -> None:
+        super().__init__()
         self.events = Events()
 
         # Subscribe to the request_start and request_end events
