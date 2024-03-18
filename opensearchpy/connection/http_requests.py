@@ -190,6 +190,7 @@ class RequestsHttpConnection(Connection):
             "allow_redirects": allow_redirects,
         }
         send_kwargs.update(settings)
+        print("self.metrics 3", self.metrics)
         self.is_metrics_none = False
         if self.metrics is None:
             self.metrics = MetricsEvents()
@@ -246,6 +247,7 @@ class RequestsHttpConnection(Connection):
                 response.headers.get("Content-Type"),
             )
 
+        print("self.metrics 1", self.metrics)
         self.log_request_success(
             method,
             url,
@@ -255,7 +257,7 @@ class RequestsHttpConnection(Connection):
             raw_data,
             self.metrics.service_time,
         )
-
+        print("self.metrics 2", self.metrics)
         if self.is_metrics_none:
             self.metrics = None
             return response.status_code, response.headers, raw_data
