@@ -34,6 +34,8 @@ from urllib3.exceptions import ReadTimeoutError
 from urllib3.exceptions import SSLError as UrllibSSLError
 from urllib3.util.retry import Retry
 
+from opensearchpy.metrics import Metrics
+
 from ..compat import reraise_exceptions, urlencode
 from ..exceptions import (
     ConnectionError,
@@ -117,6 +119,7 @@ class Urllib3HttpConnection(Connection):
         opaque_id: Any = None,
         **kwargs: Any
     ) -> None:
+        self.kwargs = kwargs
         # Initialize headers before calling super().__init__().
         self.headers = urllib3.make_headers(keep_alive=True)
 
@@ -242,8 +245,14 @@ class Urllib3HttpConnection(Connection):
 
         full_url = self.host + url
 
-        start = time.time()
         orig_body = body
+
+        calculate_service_time = False
+        if "calculate_service_time" in self.kwargs:
+            calculate_service_time = self.kwargs["calculate_service_time"]
+
+        time_metrics = TimeMetrics()
+
         try:
             kw = {}
             if timeout:
@@ -267,17 +276,22 @@ class Urllib3HttpConnection(Connection):
             if self.http_auth is not None:
                 if isinstance(self.http_auth, Callable):  # type: ignore
                     request_headers.update(self.http_auth(method, full_url, body))
-
+            time_metrics.events.server_request_start()
             response = self.pool.urlopen(
                 method, url, body, retries=Retry(False), headers=request_headers, **kw
             )
-            duration = time.time() - start
+            time_metrics.events.server_request_end()
             raw_data = response.data.decode("utf-8", "surrogatepass")
         except reraise_exceptions:
             raise
         except Exception as e:
             self.log_request_fail(
-                method, full_url, url, orig_body, time.time() - start, exception=e
+                method,
+                full_url,
+                url,
+                orig_body,
+                time.perf_counter() - time_metrics.start_time,
+                exception=e,
             )
             if isinstance(e, UrllibSSLError):
                 raise SSLError("N/A", str(e), e)
@@ -292,7 +306,13 @@ class Urllib3HttpConnection(Connection):
         # raise errors based on http status codes, let the client handle those if needed
         if not (200 <= response.status < 300) and response.status not in ignore:
             self.log_request_fail(
-                method, full_url, url, orig_body, duration, response.status, raw_data
+                method,
+                full_url,
+                url,
+                orig_body,
+                time_metrics.service_time,
+                response.status,
+                raw_data,
             )
             self._raise_error(
                 response.status,
@@ -301,10 +321,24 @@ class Urllib3HttpConnection(Connection):
             )
 
         self.log_request_success(
-            method, full_url, url, orig_body, response.status, raw_data, duration
+            method,
+            full_url,
+            url,
+            orig_body,
+            response.status,
+            raw_data,
+            time_metrics.service_time,
         )
 
-        return response.status, response.headers, raw_data
+        if calculate_service_time:
+            return (
+                response.status,
+                response.headers,
+                raw_data,
+                time_metrics.service_time,
+            )
+        else:
+            return response.status, response.headers, raw_data
 
     def get_response_headers(self, response: Any) -> Any:
         return {header.lower(): value for header, value in response.headers.items()}
