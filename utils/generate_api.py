@@ -101,9 +101,10 @@ def is_valid_url(url: str) -> bool:
 
 
 class Module:
-    def __init__(self, namespace: str) -> None:
+    def __init__(self, namespace: str, is_plugin: bool) -> None:
         self.namespace: Any = namespace
         self._apis: Any = []
+        self.is_plugin: bool = is_plugin
         self.parse_orig()
 
     def add(self, api: Any) -> None:
@@ -118,7 +119,12 @@ class Module:
         reads the written module and updates with important code specific to this client
         """
         self.orders = []
-        self.header = "from typing import Any, Collection, Optional, Tuple, Union\n\n"
+        if self.is_plugin:
+            self.header = "from typing import Any\n\n"
+        else:
+            self.header = (
+                "from typing import Any, Collection, Optional, Tuple, Union\n\n"
+            )
 
         namespace_new = "".join(word.capitalize() for word in self.namespace.split("_"))
         self.header += "class " + namespace_new + "Client(NamespacedClient):"
@@ -209,8 +215,14 @@ class Module:
 
         # Imports are temporarily removed from the header and are regenerated
         # later to ensure imports are updated after code generation.
+        utils = ".utils"
+        if self.is_plugin:
+            utils = "..client.utils"
+
         self.header = "\n".join(
-            line for line in self.header.split("\n") if "from .utils import" not in line
+            line
+            for line in self.header.split("\n")
+            if "from " + utils + " import" not in line
         )
 
         with open(self.filepath, "w", encoding="utf-8") as file:
@@ -252,7 +264,7 @@ class Module:
             present_keywords = [keyword for keyword in keywords if keyword in content]
 
             if present_keywords:
-                utils_imports = "from .utils import"
+                utils_imports = "from " + utils + " import"
                 result = f"{utils_imports} {', '.join(present_keywords)}"
                 utils_imports = result
             file_content = content.replace("#replace_token#", utils_imports)
@@ -265,7 +277,10 @@ class Module:
         """
         :return: absolute path to the module
         """
-        return CODE_ROOT / f"opensearchpy/_async/client/{self.namespace}.py"
+        if self.is_plugin:
+            return CODE_ROOT / f"opensearchpy/_async/plugins/{self.namespace}.py"
+        else:
+            return CODE_ROOT / f"opensearchpy/_async/client/{self.namespace}.py"
 
 
 class API:
@@ -704,8 +719,12 @@ def read_modules() -> Any:
 
         api = apply_patch(namespace, name, api)
 
+        is_plugin = False
+        if "_plugins" in api["url"]["paths"][0]["path"] and namespace != "security":
+            is_plugin = True
+
         if namespace not in modules:
-            modules[namespace] = Module(namespace)
+            modules[namespace] = Module(namespace, is_plugin)
 
         modules[namespace].add(API(namespace, name, api))
 
@@ -752,13 +771,20 @@ def dump_modules(modules: Any) -> None:
             todir="/opensearchpy/client/",
             additional_replacements=additional_replacements,
         ),
+        unasync.Rule(
+            fromdir="/opensearchpy/_async/plugins/",
+            todir="/opensearchpy/plugins/",
+            additional_replacements=additional_replacements,
+        ),
     ]
 
     filepaths = []
     for root, _, filenames in os.walk(CODE_ROOT / "opensearchpy/_async"):
         for filename in filenames:
-            if filename.rpartition(".")[-1] in ("py",) and not filename.startswith(
-                "utils.py"
+            if filename.rpartition(".")[-1] in ("py",) and filename not in (
+                "utils.py",
+                "index_management.py",
+                "alerting.py",
             ):
                 filepaths.append(os.path.join(root, filename))
 

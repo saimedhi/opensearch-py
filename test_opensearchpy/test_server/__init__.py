@@ -35,7 +35,7 @@ client: Any = None
 
 
 def get_client(**kwargs: Any) -> Any:
-    global client
+    global client  # pylint: disable=invalid-name
     if client is False:
         raise SkipTest("No client is available")
     if client is not None and not kwargs:
