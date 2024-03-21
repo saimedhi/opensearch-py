@@ -12,6 +12,7 @@ from typing import Any
 
 from ..plugins.alerting import AlertingClient
 from ..plugins.index_management import IndexManagementClient
+from ..plugins.knn import KnnClient
 from .client import Client
 from .utils import NamespacedClient
 
@@ -29,6 +30,7 @@ class PluginsClient(NamespacedClient):
         # self.anomaly_detection = AnomalyDetectionClient(client)
         # self.trace_analytics = TraceAnalyticsClient(client)
         self.index_management = IndexManagementClient(client)
+        self.knn = KnnClient(client)
 
         self._dynamic_lookup(client)
 
