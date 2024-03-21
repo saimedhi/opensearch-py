@@ -85,11 +85,12 @@ class TestKNNPlugin(OpenSearchTestCase):
             
             # Fetch the model state
             try:
-                response = self.client.plugins.knn.get_model(model_id=model_id, filter_path='state')['state']
+                response = self.client.plugins.knn.get_model(model_id='my-model')
                 if response['state'] != 'training':
                     pass 
-            except Exception as e:
-                print(f"Error fetching knn model: {e}")
+            except Exception as error:
+                print(f"Error fetching knn model: {error}")
+                break
             
             # Sleep for 1 minute before the next attempt
             time.sleep(10)
