@@ -79,26 +79,14 @@ class TestKNNPlugin(OpenSearchTestCase):
             }
             })
         
-        time_out = time.time() + 900  # Waiting for model to train before searching it. 
-        
+        time_out = time.time() + 60  # Waiting for model to train before searching it. 
+
         while time.time() < time_out:
-            
             # Fetch the model state
-            try:
-                response = self.client.plugins.knn.get_model(model_id='my-model')
-                if response['state'] != 'training':
-                    pass 
-            except Exception as error:
-                print(f"Error fetching knn model: {error}")
+            response = self.client.plugins.knn.get_model(model_id='my-model')
+            if response['state'] != 'training':
                 break
-            
-            # Sleep for 1 minute before the next attempt
-            time.sleep(10)
-        
-        
-        
-        
-        #self.client.plugins.knn.get_model(model_id= 'my-model')
+            time.sleep(5)
         
         print("response", response)
         self.client.plugins.knn.delete_model(model_id= 'my-model')
