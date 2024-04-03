@@ -45,6 +45,7 @@ from ..serializer import JSONSerializer
 from ..transport import Transport, get_host_info
 from .compat import get_running_loop
 from .http_aiohttp import AIOHttpConnection
+from opensearchpy.metrics.metrics import Metrics
 
 logger = logging.getLogger("opensearch")
 
@@ -60,6 +61,7 @@ class AsyncTransport(Transport):
     DEFAULT_CONNECTION_CLASS = AIOHttpConnection
 
     sniffing_task: Any = None
+    metrics: Optional[Metrics]
 
     def __init__(
         self,
@@ -78,6 +80,7 @@ class AsyncTransport(Transport):
         retry_on_status: Any = (502, 503, 504),
         retry_on_timeout: bool = False,
         send_get_body_as: str = "GET",
+        metrics: Optional[Metrics] = None,
         **kwargs: Any
     ) -> None:
         """
@@ -117,6 +120,8 @@ class AsyncTransport(Transport):
         when creating and instance unless overridden by that connection's
         options provided as part of the hosts parameter.
         """
+        self.metrics = metrics
+        print("printed metrics in transport", self.metrics)
         self.sniffing_task = None
         self.loop: Any = None
         self._async_init_called = False
@@ -138,6 +143,7 @@ class AsyncTransport(Transport):
             retry_on_status=retry_on_status,
             retry_on_timeout=retry_on_timeout,
             send_get_body_as=send_get_body_as,
+            metrics=self.metrics,
             **kwargs
         )
 

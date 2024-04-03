@@ -32,7 +32,7 @@ import warnings
 from typing import Any, Collection, Mapping, Optional, Union
 
 import urllib3
-
+from opensearchpy.metrics.metrics import Metrics
 from ..compat import reraise_exceptions, urlencode
 from ..connection.base import Connection
 from ..exceptions import (
@@ -93,6 +93,7 @@ class AIOHttpConnection(AsyncConnection):
         opaque_id: Optional[str] = None,
         loop: Any = None,
         trust_env: Optional[bool] = False,
+        metrics: Optional[Metrics] = None,
         **kwargs: Any
     ) -> None:
         """
@@ -128,7 +129,8 @@ class AIOHttpConnection(AsyncConnection):
             For tracing all requests made by this transport.
         :arg loop: asyncio Event Loop to use with aiohttp. This is set by default to the currently running loop.
         """
-
+        self.metrics = metrics
+        print("printed metrics in aiohttp connection", self.metrics)
         self.headers = {}
 
         super().__init__(
@@ -293,6 +295,8 @@ class AIOHttpConnection(AsyncConnection):
 
         start = self.loop.time()
         try:
+            if self.metrics is not None:
+                self.metrics.request_start()
             async with self.session.request(
                 method,
                 url,
@@ -327,6 +331,9 @@ class AIOHttpConnection(AsyncConnection):
             ):
                 raise ConnectionTimeout("TIMEOUT", str(e), e)
             raise ConnectionError("N/A", str(e), e)
+        finally:
+            if self.metrics is not None:
+                self.metrics.request_end()
 
         # raise warnings if any from the 'Warnings' header.
         warning_headers = response.headers.getall("warning", ())
