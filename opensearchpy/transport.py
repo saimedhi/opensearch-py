@@ -30,6 +30,7 @@ from itertools import chain
 from typing import Any, Callable, Collection, Dict, List, Mapping, Optional, Type, Union
 
 from opensearchpy.metrics.metrics import Metrics
+from opensearchpy.metrics.metrics_none import MetricsNone
 
 from .connection import Connection, Urllib3HttpConnection
 from .connection_pool import ConnectionPool, DummyConnectionPool, EmptyConnectionPool
@@ -115,7 +116,7 @@ class Transport(object):
         retry_on_status: Collection[int] = (502, 503, 504),
         retry_on_timeout: bool = False,
         send_get_body_as: str = "GET",
-        metrics: Optional[Metrics] = None,
+        metrics: Optional[Metrics] = MetricsNone(),
         **kwargs: Any
     ) -> None:
         """

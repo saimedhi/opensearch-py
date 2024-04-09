@@ -11,6 +11,7 @@ from typing import Any, Optional, Type
 
 from opensearchpy.client.utils import _normalize_hosts
 from opensearchpy.metrics.metrics import Metrics
+from opensearchpy.metrics.metrics_none import MetricsNone
 from opensearchpy.transport import Transport
 
 
@@ -23,7 +24,7 @@ class Client(object):
         self,
         hosts: Optional[str] = None,
         transport_class: Type[Transport] = Transport,
-        metrics: Optional[Metrics] = None,
+        metrics: Optional[Metrics] = MetricsNone(),
         **kwargs: Any
     ) -> None:
         """

@@ -29,6 +29,8 @@ import time
 import warnings
 from typing import Any, Collection, Mapping, Optional, Union
 
+from opensearchpy.metrics.metrics_none import MetricsNone
+
 try:
     import requests
 
@@ -88,7 +90,7 @@ class RequestsHttpConnection(Connection):
         http_compress: Any = None,
         opaque_id: Any = None,
         pool_maxsize: Any = None,
-        metrics: Optional[Metrics] = None,
+        metrics: Optional[Metrics] = MetricsNone(),
         **kwargs: Any
     ) -> None:
         self.metrics = metrics
@@ -192,8 +194,7 @@ class RequestsHttpConnection(Connection):
         }
         send_kwargs.update(settings)
         try:
-            if self.metrics is not None:
-                self.metrics.request_start()
+            self.metrics.request_start()
             response = self.session.send(prepared_request, **send_kwargs)
             duration = time.time() - start
             raw_data = response.content.decode("utf-8", "surrogatepass")
@@ -214,8 +215,7 @@ class RequestsHttpConnection(Connection):
                 raise ConnectionTimeout("TIMEOUT", str(e), e)
             raise ConnectionError("N/A", str(e), e)
         finally:
-            if self.metrics is not None:
-                self.metrics.request_end()
+            self.metrics.request_end()
 
         # raise warnings if any from the 'Warnings' header.
         warnings_headers = (
