@@ -558,7 +558,7 @@ def read_modules() -> Any:
 
     # Load the OpenAPI specification file
     response = requests.get(
-        "https://github.com/opensearch-project/opensearch-api-specification/releases/download/main/opensearch-openapi.yaml"
+        "https://github.com/saimedhi/opensearch-api-specification/releases/download/add%2Fpath/opensearch-openapi.yaml"
     )
     data = yaml.safe_load(response.text)
 

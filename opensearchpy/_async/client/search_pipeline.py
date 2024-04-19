@@ -32,7 +32,7 @@ class SearchPipelineClient(NamespacedClient):
     )
     async def get(
         self,
-        id: Any,
+        id: Any = None,
         params: Any = None,
         headers: Any = None,
     ) -> Any:
@@ -55,9 +55,6 @@ class SearchPipelineClient(NamespacedClient):
         :arg source: The URL-encoded request definition. Useful for
             libraries that do not accept a request body for non-POST requests.
         """
-        if id in SKIP_IN_PATH:
-            raise ValueError("Empty value passed for a required argument 'id'.")
-
         return await self.transport.perform_request(
             "GET", _make_path("_search", "pipeline", id), params=params, headers=headers
         )
