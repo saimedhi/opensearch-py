@@ -72,7 +72,6 @@ IMPLEMENTED_FEATURES = {
 # broken YAML tests on some releases
 SKIP_TESTS = {
     # Warning about date_histogram.interval deprecation is raised randomly
-    "OpenSearch-main/rest-api-spec/src/main/resources/rest-api-spec/test/search_pipeline/10_basic",
     "OpenSearch-main/rest-api-spec/src/main/resources/rest-api-spec/test/pit/10_basic",
     "OpenSearch-main/rest-api-spec/src/main/resources/rest-api-spec/test/indices/clone/40_wait_for_completion[0]",
     "OpenSearch-main/rest-api-spec/src/main/resources/rest-api-spec/test/indices/forcemerge/20_wait_for_completion[0]",
