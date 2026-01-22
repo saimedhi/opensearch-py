@@ -1,22 +1,22 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>opensearchpy.client.nodes &mdash; OpenSearch Python Client  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=7f485136" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3ba4146"></script>
-      <script src="../../../_static/doctools.js?v=888ff710"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -121,8 +121,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamespacedClient</span><span class="p">,</span> <span class="n">_make_path</span><span class="p">,</span> <span class="n">query_params</span>
 
 
-<div class="viewcode-block" id="NodesClient"><a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">NodesClient</span><span class="p">(</span><span class="n">NamespacedClient</span><span class="p">):</span>
-<div class="viewcode-block" id="NodesClient.reload_secure_settings"><a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.reload_secure_settings">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span><span class="s2">&quot;error_trace&quot;</span><span class="p">,</span> <span class="s2">&quot;filter_path&quot;</span><span class="p">,</span> <span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;pretty&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="NodesClient">
+<a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NodesClient</span><span class="p">(</span><span class="n">NamespacedClient</span><span class="p">):</span>
+<div class="viewcode-block" id="NodesClient.reload_secure_settings">
+<a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.reload_secure_settings">[docs]</a>
+    <span class="nd">@query_params</span><span class="p">(</span><span class="s2">&quot;error_trace&quot;</span><span class="p">,</span> <span class="s2">&quot;filter_path&quot;</span><span class="p">,</span> <span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;pretty&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reload_secure_settings</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -141,13 +145,12 @@
 <span class="sd">            target.</span>
 <span class="sd">        :arg error_trace: Whether to include the stack trace of returned</span>
 <span class="sd">            errors. Default is false.</span>
-<span class="sd">        :arg filter_path: Used to reduce the response. This parameter</span>
-<span class="sd">            takes a comma-separated list of filters. It supports using wildcards to</span>
-<span class="sd">            match any field or part of a field’s name. You can also exclude fields</span>
-<span class="sd">            with &quot;-&quot;.</span>
-<span class="sd">        :arg human: Whether to return human readable values for</span>
-<span class="sd">            statistics. Default is True.</span>
-<span class="sd">        :arg pretty: Whether to pretty format the returned JSON</span>
+<span class="sd">        :arg filter_path: A comma-separated list of filters used to</span>
+<span class="sd">            filter the response. Use wildcards to match any field or part of a</span>
+<span class="sd">            field&#39;s name. To exclude fields, use `-`.</span>
+<span class="sd">        :arg human: Whether to return human-readable values for</span>
+<span class="sd">            statistics. Default is false.</span>
+<span class="sd">        :arg pretty: Whether to pretty-format the returned JSON</span>
 <span class="sd">            response. Default is false.</span>
 <span class="sd">        :arg source: The URL-encoded request definition. Useful for</span>
 <span class="sd">            libraries that do not accept a request body for non-POST requests.</span>
@@ -163,7 +166,10 @@
             <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="NodesClient.info"><a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.info">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span>
+
+<div class="viewcode-block" id="NodesClient.info">
+<a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.info">[docs]</a>
+    <span class="nd">@query_params</span><span class="p">(</span>
         <span class="s2">&quot;error_trace&quot;</span><span class="p">,</span>
         <span class="s2">&quot;filter_path&quot;</span><span class="p">,</span>
         <span class="s2">&quot;flat_settings&quot;</span><span class="p">,</span>
@@ -194,15 +200,14 @@
 <span class="sd">            such as `node1,node2` or `http,ingest`.</span>
 <span class="sd">        :arg error_trace: Whether to include the stack trace of returned</span>
 <span class="sd">            errors. Default is false.</span>
-<span class="sd">        :arg filter_path: Used to reduce the response. This parameter</span>
-<span class="sd">            takes a comma-separated list of filters. It supports using wildcards to</span>
-<span class="sd">            match any field or part of a field’s name. You can also exclude fields</span>
-<span class="sd">            with &quot;-&quot;.</span>
+<span class="sd">        :arg filter_path: A comma-separated list of filters used to</span>
+<span class="sd">            filter the response. Use wildcards to match any field or part of a</span>
+<span class="sd">            field&#39;s name. To exclude fields, use `-`.</span>
 <span class="sd">        :arg flat_settings: When `true`, returns settings in flat</span>
 <span class="sd">            format. Default is false.</span>
-<span class="sd">        :arg human: Whether to return human readable values for</span>
-<span class="sd">            statistics. Default is True.</span>
-<span class="sd">        :arg pretty: Whether to pretty format the returned JSON</span>
+<span class="sd">        :arg human: Whether to return human-readable values for</span>
+<span class="sd">            statistics. Default is false.</span>
+<span class="sd">        :arg pretty: Whether to pretty-format the returned JSON</span>
 <span class="sd">            response. Default is false.</span>
 <span class="sd">        :arg source: The URL-encoded request definition. Useful for</span>
 <span class="sd">            libraries that do not accept a request body for non-POST requests.</span>
@@ -214,7 +219,10 @@
             <span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">_make_path</span><span class="p">(</span><span class="s2">&quot;_nodes&quot;</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">metric</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="NodesClient.stats"><a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.stats">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span>
+
+<div class="viewcode-block" id="NodesClient.stats">
+<a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.stats">[docs]</a>
+    <span class="nd">@query_params</span><span class="p">(</span>
         <span class="s2">&quot;completion_fields&quot;</span><span class="p">,</span>
         <span class="s2">&quot;error_trace&quot;</span><span class="p">,</span>
         <span class="s2">&quot;fielddata_fields&quot;</span><span class="p">,</span>
@@ -257,21 +265,20 @@
 <span class="sd">            expressions of fields to include in field data statistics.</span>
 <span class="sd">        :arg fields: A comma-separated list or wildcard expressions of</span>
 <span class="sd">            fields to include in the statistics.</span>
-<span class="sd">        :arg filter_path: Used to reduce the response. This parameter</span>
-<span class="sd">            takes a comma-separated list of filters. It supports using wildcards to</span>
-<span class="sd">            match any field or part of a field’s name. You can also exclude fields</span>
-<span class="sd">            with &quot;-&quot;.</span>
+<span class="sd">        :arg filter_path: A comma-separated list of filters used to</span>
+<span class="sd">            filter the response. Use wildcards to match any field or part of a</span>
+<span class="sd">            field&#39;s name. To exclude fields, use `-`.</span>
 <span class="sd">        :arg groups: A comma-separated list of search groups to include</span>
 <span class="sd">            in the search statistics.</span>
-<span class="sd">        :arg human: Whether to return human readable values for</span>
-<span class="sd">            statistics. Default is True.</span>
+<span class="sd">        :arg human: Whether to return human-readable values for</span>
+<span class="sd">            statistics. Default is false.</span>
 <span class="sd">        :arg include_segment_file_sizes: When `true`,  reports the</span>
 <span class="sd">            aggregated disk usage of each one of the Lucene index files (only</span>
 <span class="sd">            applies if segment stats are requested). Default is false.</span>
 <span class="sd">        :arg level: Indicates whether statistics are aggregated at the</span>
 <span class="sd">            cluster, index, or shard level. Valid choices are cluster, indices,</span>
 <span class="sd">            shards.</span>
-<span class="sd">        :arg pretty: Whether to pretty format the returned JSON</span>
+<span class="sd">        :arg pretty: Whether to pretty-format the returned JSON</span>
 <span class="sd">            response. Default is false.</span>
 <span class="sd">        :arg source: The URL-encoded request definition. Useful for</span>
 <span class="sd">            libraries that do not accept a request body for non-POST requests.</span>
@@ -288,7 +295,10 @@
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="NodesClient.hot_threads"><a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.hot_threads">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span>
+
+<div class="viewcode-block" id="NodesClient.hot_threads">
+<a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.hot_threads">[docs]</a>
+    <span class="nd">@query_params</span><span class="p">(</span>
         <span class="s2">&quot;doc_type&quot;</span><span class="p">,</span>
         <span class="s2">&quot;error_trace&quot;</span><span class="p">,</span>
         <span class="s2">&quot;filter_path&quot;</span><span class="p">,</span>
@@ -320,18 +330,17 @@
 <span class="sd">            wait.</span>
 <span class="sd">        :arg error_trace: Whether to include the stack trace of returned</span>
 <span class="sd">            errors. Default is false.</span>
-<span class="sd">        :arg filter_path: Used to reduce the response. This parameter</span>
-<span class="sd">            takes a comma-separated list of filters. It supports using wildcards to</span>
-<span class="sd">            match any field or part of a field’s name. You can also exclude fields</span>
-<span class="sd">            with &quot;-&quot;.</span>
-<span class="sd">        :arg human: Whether to return human readable values for</span>
-<span class="sd">            statistics. Default is True.</span>
+<span class="sd">        :arg filter_path: A comma-separated list of filters used to</span>
+<span class="sd">            filter the response. Use wildcards to match any field or part of a</span>
+<span class="sd">            field&#39;s name. To exclude fields, use `-`.</span>
+<span class="sd">        :arg human: Whether to return human-readable values for</span>
+<span class="sd">            statistics. Default is false.</span>
 <span class="sd">        :arg ignore_idle_threads: Whether to show threads that are in</span>
 <span class="sd">            known-idle places, such as waiting on a socket select or pulling from an</span>
 <span class="sd">            empty task queue. Default is True.</span>
 <span class="sd">        :arg interval: The time interval between thread stack trace</span>
 <span class="sd">            samples.</span>
-<span class="sd">        :arg pretty: Whether to pretty format the returned JSON</span>
+<span class="sd">        :arg pretty: Whether to pretty-format the returned JSON</span>
 <span class="sd">            response. Default is false.</span>
 <span class="sd">        :arg snapshots: The number of thread stack trace samples to</span>
 <span class="sd">            collect. Default is 10.</span>
@@ -354,7 +363,10 @@
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="NodesClient.usage"><a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.usage">[docs]</a>    <span class="nd">@query_params</span><span class="p">(</span><span class="s2">&quot;error_trace&quot;</span><span class="p">,</span> <span class="s2">&quot;filter_path&quot;</span><span class="p">,</span> <span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;pretty&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NodesClient.usage">
+<a class="viewcode-back" href="../../../api-ref/clients/nodes_client.html#opensearchpy.client.nodes.NodesClient.usage">[docs]</a>
+    <span class="nd">@query_params</span><span class="p">(</span><span class="s2">&quot;error_trace&quot;</span><span class="p">,</span> <span class="s2">&quot;filter_path&quot;</span><span class="p">,</span> <span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;pretty&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">usage</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -376,13 +388,12 @@
 <span class="sd">            `rest_actions`.</span>
 <span class="sd">        :arg error_trace: Whether to include the stack trace of returned</span>
 <span class="sd">            errors. Default is false.</span>
-<span class="sd">        :arg filter_path: Used to reduce the response. This parameter</span>
-<span class="sd">            takes a comma-separated list of filters. It supports using wildcards to</span>
-<span class="sd">            match any field or part of a field’s name. You can also exclude fields</span>
-<span class="sd">            with &quot;-&quot;.</span>
-<span class="sd">        :arg human: Whether to return human readable values for</span>
-<span class="sd">            statistics. Default is True.</span>
-<span class="sd">        :arg pretty: Whether to pretty format the returned JSON</span>
+<span class="sd">        :arg filter_path: A comma-separated list of filters used to</span>
+<span class="sd">            filter the response. Use wildcards to match any field or part of a</span>
+<span class="sd">            field&#39;s name. To exclude fields, use `-`.</span>
+<span class="sd">        :arg human: Whether to return human-readable values for</span>
+<span class="sd">            statistics. Default is false.</span>
+<span class="sd">        :arg pretty: Whether to pretty-format the returned JSON</span>
 <span class="sd">            response. Default is false.</span>
 <span class="sd">        :arg source: The URL-encoded request definition. Useful for</span>
 <span class="sd">            libraries that do not accept a request body for non-POST requests.</span>
@@ -395,7 +406,9 @@
             <span class="n">_make_path</span><span class="p">(</span><span class="s2">&quot;_nodes&quot;</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="s2">&quot;usage&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="p">),</span>
             <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>
