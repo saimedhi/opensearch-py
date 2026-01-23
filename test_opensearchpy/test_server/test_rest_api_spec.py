@@ -436,17 +436,24 @@ def load_rest_api_tests() -> None:
         # Construct the HTTP and OpenSearch client
         http = urllib3.PoolManager(retries=10)
 
+        # REST API YAML test runner will use OpenSearch 2.x branch spec for integration tests against OpenSearch 1.x and 2.x, and main branch spec for 3.x+
+        runner = YamlRunner(client)
+        version = runner.opensearch_version()
+        if version and version[0] in (1, 2):
+            branch = "2.x"
+        else:
+            branch = "main"
+
         package_url = (
-            "https://github.com/opensearch-project/OpenSearch/archive/main.zip"
+            f"https://github.com/opensearch-project/OpenSearch/archive/{branch}.zip"
         )
 
         # Download the zip and start reading YAML from the files in memory
         package_zip = zipfile.ZipFile(io.BytesIO(http.request("GET", package_url).data))
         for yaml_file in package_zip.namelist():
-            if not re.match(
-                r"^OpenSearch-main/rest-api-spec/src/main/resources/rest-api-spec/test/.*\.ya?ml$",
-                yaml_file,
-            ):
+            pattern = rf"^OpenSearch-{re.escape(branch)}/rest-api-spec/src/main/resources/rest-api-spec/test/.*\.ya?ml$"
+
+            if not re.match(pattern, yaml_file):
                 continue
             yaml_tests = list(yaml.safe_load_all(package_zip.read(yaml_file)))
 

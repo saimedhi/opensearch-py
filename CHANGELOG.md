@@ -8,6 +8,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Updated APIs
 - Updated opensearch-py APIs to reflect [opensearch-api-specification@2954600](https://github.com/opensearch-project/opensearch-api-specification/commit/2954600ddafbd98a1ab9f530054bb1b62380a92a)
 ### Changed
+- Updated REST API YAML test runner to use OpenSearch 2.x branch spec for integration tests against OpenSearch 1.x and 2.x, and main branch spec for 3.x+ ([#995](https://github.com/opensearch-project/opensearch-py/pull/995))
 ### Deprecated
 ### Removed
 ### Fixed
